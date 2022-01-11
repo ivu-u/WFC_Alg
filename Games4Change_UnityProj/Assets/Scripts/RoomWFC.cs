@@ -5,29 +5,36 @@ using UnityEngine;
 public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
-    private static int roomDimension = 4;   // room tiles are square
+    private static int roomDimension = 2;   // room tiles are square
 
     // create a 2D array of Dictionaries to simulate the room
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
 
     // room tile rules
-    public bool isFirst;    // is this the first room generated
+    
 
     // refrence the helpers
     public GameObject helperObject;
     HelperFunctions helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
+    public bool finishedSuperposition = false;
 
     private void Start()
     {
-        // initialize filled dictionary
+        // copy filledDict into local var
         helperFunctions = helperObject.GetComponent<HelperFunctions>();
-        //filledDictionary = 
+        filledDictionary = helperFunctions.filledDictionary;
+    }
+
+    public void Update()
+    {
+        Generate();
     }
 
     public void Generate()
     {
-
+        if (!finishedSuperposition)
+            SuperPosition();
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -36,9 +43,11 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             for (int y = 0; y < roomDimension; y++)
             {
-
+                roomMatrix[x, y] = filledDictionary;
+                Debug.Log("Filled: " + x + " " + y);
             }
         }
+        finishedSuperposition = true;
     }
     
 }
