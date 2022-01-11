@@ -123,7 +123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db30719c0e0b4237b536dfadbd7fafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aboveList: []
-  aboveBelow: []
-  leftList: []
-  rightList: []
+  aboveList:
+  - {fileID: 1955395609758550460, guid: ef17c4272e20542ae9ed3489bad585f7, type: 3}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  aboveBelow:
+  - {fileID: 1955395609758550460, guid: ef17c4272e20542ae9ed3489bad585f7, type: 3}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  leftList:
+  - {fileID: 1955395609758550460, guid: ef17c4272e20542ae9ed3489bad585f7, type: 3}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  rightList:
+  - {fileID: 1955395609758550460, guid: ef17c4272e20542ae9ed3489bad585f7, type: 3}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}

@@ -96,7 +96,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db30719c0e0b4237b536dfadbd7fafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aboveList: []
-  aboveBelow: []
-  leftList: []
-  rightList: []
+  aboveList:
+  - {fileID: 7451751575615298393}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  aboveBelow:
+  - {fileID: 7451751575615298393}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  leftList:
+  - {fileID: 7451751575615298393}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
+  rightList:
+  - {fileID: 7451751575615298393}
+  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
