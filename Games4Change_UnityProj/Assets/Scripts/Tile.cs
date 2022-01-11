@@ -27,4 +27,14 @@ public class Tile : MonoBehaviour
     {
         
     }
+
+    public void flipTopBottom ()
+    {
+
+    }
+
+    public void flipSides ()
+    {
+
+    }
 }
