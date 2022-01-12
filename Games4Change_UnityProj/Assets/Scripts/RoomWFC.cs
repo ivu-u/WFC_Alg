@@ -17,7 +17,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     public GameObject helperObject;
     HelperFunctions helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
-    public bool finishedSuperposition = false;
+    private bool finishedSuperposition = false;
 
     private void Start()
     {
@@ -26,15 +26,16 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         filledDictionary = helperFunctions.filledDictionary;
     }
 
-    public void Update()
-    {
+    public void Update(){
         Generate();
     }
 
-    public void Generate()
+    public void Generate()  // starter
     {
         if (!finishedSuperposition)
             SuperPosition();
+
+        findEntropy();
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -48,6 +49,11 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             }
         }
         finishedSuperposition = true;
+    }
+
+    private void findEntropy()
+    {
+
     }
     
 }
