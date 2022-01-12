@@ -21,7 +21,7 @@ public class HelperFunctions : MonoBehaviour
         filledDictionary.Add("floor_tile", floor_tile);
         filledDictionary.Add("exit_tile", exit_tile);
         filledDictionary.Add("entry_tile", entry_tile);
-        filledDictionary.Add("voi_tile", void_tile);
+        filledDictionary.Add("void_tile", void_tile);
     }
 
 
