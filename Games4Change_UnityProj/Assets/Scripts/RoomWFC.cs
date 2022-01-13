@@ -13,8 +13,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
     bool[,] boolGeneratedMatrix = new bool[roomDimension, roomDimension];
 
+    // entropy/selection vars
+    List<int> lowestEntropyCoords = new List<int>();  // list of low entropy tile coords (x,y)
+    private int chosenX;
+    private int chosenY;
+
     // room tile rules
-    
+
 
     // refrence the helpers
     public GameObject helperObject;
@@ -29,16 +34,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         filledDictionary = helperFunctions.filledDictionary;
     }
 
-    public void Update(){
-        Generate();
-    }
-
     public void Generate()  // starter
     {
         if (!finishedSuperposition)
             SuperPosition();
 
         findEntropy();
+        
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -56,7 +58,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
     {
-        List<int> lowestEntropyCoords = new List<int>();  // save x y coords of cell with lowest entropy
+        lowestEntropyCoords.Clear();    // clear list
         int lowestEntropyAmount = totalTiles;
 
         for (int x = 0; x < roomDimension; x++)
@@ -72,10 +74,40 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 }
                 else if (roomMatrix[x, y].Count == lowestEntropyAmount)     //an item with equal entropy to lowestEA
                 {
-
+                    lowestEntropyCoords.Add(x);
+                    lowestEntropyCoords.Add(y);
+                }
+                else    // > lowest entropy
+                {
+                    // do nothing
                 }
             }
         }
+    }
+
+    private void chooseTile()
+    {
+        if (lowestEntropyCoords.Count == 2)
+        {
+            // since there is only one option just use those coords
+            chosenX = lowestEntropyCoords[0];
+            chosenY = lowestEntropyCoords[1];
+        }
+        else
+        {
+            // since there are multiple options ranomly choose one
+            int randNum = generateRandom();
+            chosenX = randNum;
+            chosenY = randNum + 1;
+        }
+    }
+
+    public int generateRandom()
+    {
+        int randNum = Random.Range(0, 4 / 2);//lowestEntropyCoords.Count
+        randNum = randNum * 2;
+
+        return randNum;
     }
 
     private void Collapse (int posX, int posY)
