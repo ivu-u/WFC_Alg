@@ -13,8 +13,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
     bool[,] boolGeneratedMatrix = new bool[roomDimension, roomDimension];
 
+    // entropy/selection vars
+    List<int> lowestEntropyCoords = new List<int>();  // list of low entropy tile coords (x,y)
+    private int chosenX;
+    private int chosenY;
+
     // room tile rules
-    
+
 
     // refrence the helpers
     public GameObject helperObject;
@@ -59,7 +64,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
     {
-        List<int> lowestEntropyCoords = new List<int>();  // save x y coords of cell with lowest entropy
+        lowestEntropyCoords.Clear();    // clear list
         int lowestEntropyAmount = totalTiles;
 
         for (int x = 0; x < roomDimension; x++)
@@ -75,7 +80,12 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 }
                 else if (roomMatrix[x, y].Count == lowestEntropyAmount)     //an item with equal entropy to lowestEA
                 {
-
+                    lowestEntropyCoords.Add(x);
+                    lowestEntropyCoords.Add(y);
+                }
+                else    // > lowest entropy
+                {
+                    // do nothing
                 }
             }
         }
