@@ -6,6 +6,7 @@ public class HelperFunctions : MonoBehaviour
 {
     // make a dictionary that contains all possible solutions
     public Dictionary<string, GameObject> filledDictionary = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> testDictionary = new Dictionary<string, GameObject>();
 
     // drag in tiles
     [Header("Tiles")]
@@ -17,11 +18,15 @@ public class HelperFunctions : MonoBehaviour
 
     private void Start()    // initialize filled dictionary
     {
+        //filled
         filledDictionary.Add("wall_tile", wall_tile);
         filledDictionary.Add("floor_tile", floor_tile);
         filledDictionary.Add("exit_tile", exit_tile);
         filledDictionary.Add("entry_tile", entry_tile);
         filledDictionary.Add("void_tile", void_tile);
+
+        //test
+        testDictionary.Add("void_tile", void_tile);
     }
 
 

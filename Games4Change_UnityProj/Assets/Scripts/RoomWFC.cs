@@ -29,9 +29,14 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     private void Start()
     {
+
         // copy filledDict into local var
         helperFunctions = helperObject.GetComponent<HelperFunctions>();
         filledDictionary = helperFunctions.filledDictionary;
+        Generate();
+    }
+
+    public void Update(){
     }
 
     public void Generate()  // starter
@@ -39,8 +44,9 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         if (!finishedSuperposition)
             SuperPosition();
 
-        findEntropy();
-        
+        //findEntropy();
+        roomMatrix[0, 0] = helperFunctions.testDictionary;
+        Collapse(1, 0);
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -85,32 +91,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         }
     }
 
-    private void chooseTile()
-    {
-        if (lowestEntropyCoords.Count == 2)
-        {
-            // since there is only one option just use those coords
-            chosenX = lowestEntropyCoords[0];
-            chosenY = lowestEntropyCoords[1];
-        }
-        else
-        {
-            // since there are multiple options ranomly choose one
-            int randNum = generateRandom();
-            chosenX = randNum;
-            chosenY = randNum + 1;
-        }
-    }
-
-    public int generateRandom()
-    {
-        int randNum = Random.Range(0, 4 / 2);//lowestEntropyCoords.Count
-        randNum = randNum * 2;
-
-        return randNum;
-    }
-
-    private void Collapse (int posX, int posY)
+    private List<GameObject> Collapse (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
@@ -136,6 +117,11 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             bottomTile = true;
         }
+
+        Debug.Log(topTile);
+        Debug.Log(leftTile);
+        Debug.Log(rightTile);
+        Debug.Log(bottomTile);
 
         //top and left - a
         List<GameObject> a = new List<GameObject>();
@@ -165,6 +151,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             foreach (GameObject type in left)
             {
                 a.Add(type);
+                Debug.Log("right list: " + type.name);
             }
         }
 
@@ -205,11 +192,50 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         //combo of a and b
         List<GameObject> allowedTiles = new List<GameObject>();
         var intersectAll = a.Intersect(b);
+        if (a.Any() && b.Any())
+        {
+            intersectAll = a.Intersect(b);
+        } else if (a.Any())
+        {
+            intersectAll = a;
+        } else
+        {
+            intersectAll = b;
+        }
+        string j = "Final allowed: ";
         foreach (GameObject type in intersectAll)
         {
             allowedTiles.Add(type);
+            j += type.name;
+        }
+        Debug.Log(j);
+
+        List<GameObject> notAllowed = new List<GameObject>();
+
+        foreach(KeyValuePair<string, GameObject> tile in filledDictionary)
+        {
+            bool found = false;
+            foreach (GameObject candidate in allowedTiles)
+            {
+                if(tile.Value == candidate)
+                {
+                    found = true;
+                }
+                if(found == false)
+                {
+                    notAllowed.Add(tile.Value);
+                }
+            }
         }
 
         //need to return the tiles that aren't allowed from here
+        string result = "Final not allowed: ";
+        foreach (GameObject z in notAllowed)
+        {
+            result += z.name + ", ";
+        }
+        Debug.Log(result);
+            
+        return notAllowed;
     }
 }
