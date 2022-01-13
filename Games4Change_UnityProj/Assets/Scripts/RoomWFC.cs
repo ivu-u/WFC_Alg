@@ -108,11 +108,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             bottomTile = true;
         }
 
-        Debug.Log(topTile);
-        Debug.Log(leftTile);
-        Debug.Log(rightTile);
-        Debug.Log(bottomTile);
-
         //top and left - a
         List<GameObject> a = new List<GameObject>();
         if (topTile && leftTile)
@@ -141,7 +136,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             foreach (GameObject type in left)
             {
                 a.Add(type);
-                Debug.Log("right list: " + type.name);
             }
         }
 
@@ -192,13 +186,10 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             intersectAll = b;
         }
-        string j = "Final allowed: ";
         foreach (GameObject type in intersectAll)
         {
             allowedTiles.Add(type);
-            j += type.name;
         }
-        Debug.Log(j);
 
         List<GameObject> notAllowed = new List<GameObject>();
 
@@ -211,10 +202,10 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 {
                     found = true;
                 }
-                if(found == false)
-                {
-                    notAllowed.Add(tile.Value);
-                }
+            }
+            if (found == false)
+            {
+                notAllowed.Add(tile.Value);
             }
         }
 
@@ -222,7 +213,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         string result = "Final not allowed: ";
         foreach (GameObject z in notAllowed)
         {
-            result += z.name + ", ";
+            result += (z.name + ", ");
         }
         Debug.Log(result);
             
