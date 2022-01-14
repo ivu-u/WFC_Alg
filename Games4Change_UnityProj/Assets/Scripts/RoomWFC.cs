@@ -52,7 +52,20 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         Propagate(chosenX, chosenY);
     }
 
-    private void SuperPosition()    // fill all tiles with all possible solutions
+    private void spawn()
+    {
+        for (int x = 0; x < roomDimension; x++)
+        {
+            for (int y = 0; y < roomDimension; y++)
+            {
+                Dictionary<string, GameObject> tile = roomMatrix[x, y];
+                GameObject prefabToSpawn = tile.First().Value;
+                Instantiate(prefabToSpawn, new Vector3(x, y, 0), prefabToSpawn.transform.rotation);
+            }
+        }
+    }
+
+        private void SuperPosition()    // fill all tiles with all possible solutions
     {
         for (int x = 0; x < roomDimension; x++)
         {
