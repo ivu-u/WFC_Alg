@@ -9,6 +9,8 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     private static int roomDimension = 2;   // room tiles are square
     private int totalTiles = 4;          // !!
 
+    private bool superpositionDone = false;
+
     // create a 2D array of Dictionaries to simulate the room
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
     bool[,] boolGeneratedMatrix = new bool[roomDimension, roomDimension];
@@ -40,13 +42,14 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     public void Generate()  // starter
     {
-        SuperPosition();
+        if (!superpositionDone)
+            SuperPosition();
 
         findEntropy();
         chooseCoords();
         //roomMatrix[0, 0] = helperFunctions.testDictionary;
         //Collapse(1, 0);
-        Collapse(chosenX, chosenY);
+        Propagate(chosenX, chosenY);
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -59,6 +62,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 Debug.Log("Filled: " + x + " " + y);
             }
         }
+        superpositionDone = true;
     }
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
@@ -113,7 +117,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         return randNum;
     }
 
-    private List<GameObject> Collapse (int posX, int posY)
+    private List<GameObject> Propagate (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
