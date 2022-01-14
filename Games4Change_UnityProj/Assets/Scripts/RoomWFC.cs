@@ -25,7 +25,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     public GameObject helperObject;
     HelperFunctions helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
-    private bool finishedSuperposition = false;
 
     private void Start()
     {
@@ -41,13 +40,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     public void Generate()  // starter
     {
-        if (!finishedSuperposition)
-            SuperPosition();
+        SuperPosition();
 
         findEntropy();
         chooseCoords();
-        roomMatrix[0, 0] = helperFunctions.testDictionary;
-        Collapse(1, 0);
+        //roomMatrix[0, 0] = helperFunctions.testDictionary;
+        //Collapse(1, 0);
+        Collapse(chosenX, chosenY);
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -60,7 +59,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 Debug.Log("Filled: " + x + " " + y);
             }
         }
-        finishedSuperposition = true;
     }
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
