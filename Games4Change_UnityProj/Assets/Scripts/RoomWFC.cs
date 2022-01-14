@@ -7,7 +7,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
     private static int roomDimension = 2;   // room tiles are square
-    private int totalTiles = 5;          // !!
+    private int totalTiles = 4;          // !!
 
     // create a 2D array of Dictionaries to simulate the room
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
@@ -44,7 +44,8 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         if (!finishedSuperposition)
             SuperPosition();
 
-        //findEntropy();
+        findEntropy();
+        chooseCoords();
         roomMatrix[0, 0] = helperFunctions.testDictionary;
         Collapse(1, 0);
     }
@@ -89,6 +90,29 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 }
             }
         }
+    }
+
+    private void chooseCoords()
+    {
+        if (lowestEntropyCoords.Count == 2) // if only one choice
+        {
+            chosenX = lowestEntropyCoords[0];
+            chosenY = lowestEntropyCoords[1];
+        }
+        else   // choose a random tile
+        {
+            int randNum = generateRandom();
+            chosenX = lowestEntropyCoords[randNum];
+            chosenY = lowestEntropyCoords[randNum + 1];
+        }
+    }
+
+    public int generateRandom()
+    {
+        int randNum = Random.Range(0, lowestEntropyCoords.Count / 2);   // generate an even num
+        randNum = randNum * 2;
+
+        return randNum;
     }
 
     private List<GameObject> Collapse (int posX, int posY)
