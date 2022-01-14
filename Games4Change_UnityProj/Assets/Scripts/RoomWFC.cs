@@ -7,7 +7,9 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
     private static int roomDimension = 2;   // room tiles are square
-    private int totalTiles = 5;          // !!
+    private int totalTiles = 4;          // !!
+
+    private bool superpositionDone = false;
 
     // create a 2D array of Dictionaries to simulate the room
     public Dictionary<string, GameObject>[,] roomMatrix = new Dictionary<string, GameObject>[roomDimension, roomDimension];
@@ -25,7 +27,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     public GameObject helperObject;
     HelperFunctions helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
-    private bool finishedSuperposition = false;
 
     private void Start()
     {
@@ -41,34 +42,14 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     public void Generate()  // starter
     {
-        //make the room grid
-        if (!finishedSuperposition)
+        if (!superpositionDone)
             SuperPosition();
 
-        //spawn any tiles ahead of time (entrance, exit);
-        roomMatrix[0, 0] = helperFunctions.testDictionary;
-
-        //loop while not all tiles are filled
-            //find lowest entropy
-            //findEntropy();
-            //collapse it
-            Collapse(1, 0);
-
-        //start spawning all the tiles in
-        spawn();
-    }
-
-    private void spawn ()
-    {
-        for (int x = 0; x < roomDimension; x++)
-        {
-            for (int y = 0; y < roomDimension; y++)
-            {
-                Dictionary<string, GameObject> tile = roomMatrix[x, y];
-                GameObject prefabToSpawn = tile.First().Value;
-                Instantiate(prefabToSpawn, new Vector3(x, y, 0), prefabToSpawn.transform.rotation);
-            }
-        }
+        findEntropy();
+        chooseCoords();
+        //roomMatrix[0, 0] = helperFunctions.testDictionary;
+        //Collapse(1, 0);
+        Propagate(chosenX, chosenY);
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
@@ -81,7 +62,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 Debug.Log("Filled: " + x + " " + y);
             }
         }
-        finishedSuperposition = true;
+        superpositionDone = true;
     }
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
@@ -113,7 +94,30 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         }
     }
 
-    private List<GameObject> Collapse (int posX, int posY)
+    private void chooseCoords()
+    {
+        if (lowestEntropyCoords.Count == 2) // if only one choice
+        {
+            chosenX = lowestEntropyCoords[0];
+            chosenY = lowestEntropyCoords[1];
+        }
+        else   // choose a random tile
+        {
+            int randNum = generateRandom();
+            chosenX = lowestEntropyCoords[randNum];
+            chosenY = lowestEntropyCoords[randNum + 1];
+        }
+    }
+
+    public int generateRandom()
+    {
+        int randNum = Random.Range(0, lowestEntropyCoords.Count / 2);   // generate an even num
+        randNum = randNum * 2;
+
+        return randNum;
+    }
+
+    private List<GameObject> Propagate (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
