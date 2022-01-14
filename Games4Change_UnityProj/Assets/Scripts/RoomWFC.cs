@@ -41,12 +41,34 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     public void Generate()  // starter
     {
+        //make the room grid
         if (!finishedSuperposition)
             SuperPosition();
 
-        //findEntropy();
+        //spawn any tiles ahead of time (entrance, exit);
         roomMatrix[0, 0] = helperFunctions.testDictionary;
-        Collapse(1, 0);
+
+        //loop while not all tiles are filled
+            //find lowest entropy
+            //findEntropy();
+            //collapse it
+            Collapse(1, 0);
+
+        //start spawning all the tiles in
+        spawn();
+    }
+
+    private void spawn ()
+    {
+        for (int x = 0; x < roomDimension; x++)
+        {
+            for (int y = 0; y < roomDimension; y++)
+            {
+                Dictionary<string, GameObject> tile = roomMatrix[x, y];
+                GameObject prefabToSpawn = tile.First().Value;
+                Instantiate(prefabToSpawn, new Vector3(x, y, 0), prefabToSpawn.transform.rotation);
+            }
+        }
     }
 
     private void SuperPosition()    // fill all tiles with all possible solutions
