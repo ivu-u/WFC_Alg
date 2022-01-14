@@ -49,7 +49,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         chooseCoords();
         //roomMatrix[0, 0] = helperFunctions.testDictionary;
         //Collapse(1, 0);
-        Propagate(chosenX, chosenY);
+        Collapse(Propagate(chosenX, chosenY));
     }
 
     private void spawn()
@@ -65,7 +65,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         }
     }
 
-        private void SuperPosition()    // fill all tiles with all possible solutions
+    private void SuperPosition()    // fill all tiles with all possible solutions
     {
         for (int x = 0; x < roomDimension; x++)
         {
@@ -75,7 +75,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 Debug.Log("Filled: " + x + " " + y);
             }
         }
-        superpositionDone = true;
+            superpositionDone = true;
     }
 
     private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
@@ -267,5 +267,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         Debug.Log(result);
             
         return notAllowed;
+
+        // add cross out here (ish). modulate
+    }
+
+    private void Collapse(List<GameObject> notAllowed)
+    {
+        
+        // make sure 2D bool matrix is also updated
     }
 }
