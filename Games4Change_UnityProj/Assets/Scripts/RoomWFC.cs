@@ -50,6 +50,44 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         //roomMatrix[0, 0] = helperFunctions.testDictionary;
         //Collapse(1, 0);
         Collapse(Propagate(chosenX, chosenY));
+        bool doneGenerating = false;
+
+        while (doneGenerating == false)
+        {
+            //loop through each tile and propagate (narrow down dictionary)
+            for(int y = 0; y < roomDimension; y++)
+            {
+                for(int x = 0; x < roomDimension; x++)
+                {
+                    Propagate(x, y);
+                }
+            }
+            //find the tile(s) with the smallest dictionaries
+            findEntropy();
+            //choose one of them
+            chooseCoords();
+            //say what tile should be there with the collapse function
+            //collapse(chosenX, chosenY);
+            //check if every tile is "filled" - if it is, then stop the loop
+            doneGenerating = checkGeneration();
+        }
+        //put gmaeObjects in each spot with spawn();
+    }
+
+    private bool checkGeneration ()
+    {
+        bool pass = true;
+        for(int x = 0; x < roomDimension; x++)
+        {
+            for(int y = 0; y < roomDimension; y++)
+            {
+                if(boolGeneratedMatrix[x,y] == false)
+                {
+                    pass = false;
+                }
+            }
+        }
+        return pass;
     }
 
     private void spawn()
@@ -78,7 +116,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             superpositionDone = true;
     }
 
-    private void findEntropy()  // find tile with lowest entropy (the lowest number of possible solutions)
+    private void findEntropy()  // find tile(s) with lowest entropy (the lowest number of possible solutions)
     {
         lowestEntropyCoords.Clear();    // clear list
         int lowestEntropyAmount = totalTiles;
@@ -130,7 +168,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         return randNum;
     }
 
-    private List<GameObject> Propagate (int posX, int posY)
+    private void Propagate (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
@@ -240,7 +278,16 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             allowedTiles.Add(type);
         }
 
-        List<GameObject> notAllowed = new List<GameObject>();
+        //allowedTile dictionary
+        Dictionary<string, GameObject> newDictionary = new Dictionary<string, GameObject>();
+        foreach(GameObject tile in allowedTiles)
+        {
+            newDictionary.Add(tile.name, tile);
+        }
+
+        roomMatrix[posX, posY] = newDictionary;
+
+        /*List<GameObject> notAllowed = new List<GameObject>();
 
         foreach(KeyValuePair<string, GameObject> tile in filledDictionary)
         {
@@ -275,5 +322,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     {
         
         // make sure 2D bool matrix is also updated
+        }*/
     }
 }
