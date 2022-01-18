@@ -42,8 +42,11 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     public void Generate()  // starter
     {
+        Debug.Log("generation start");
+
         if (!superpositionDone)
             SuperPosition();
+        Debug.Log("superposition done");
 
         bool doneGenerating = false;
 
@@ -55,19 +58,25 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 for(int x = 0; x < roomDimension; x++)
                 {
                     Propagate(x, y);
+                    Debug.Log("propagate");
                 }
             }
             //find the tile(s) with the smallest dictionaries
             findEntropy();
+            Debug.Log("entropy found");
             //choose one of them
             chooseCoords();
+            Debug.Log("coords chosen");
+            Debug.Log("x: " + chosenX + " y: " + chosenY);
             //choose a tile to go there
-
-            //collapse(chosenX, chosenY);
+            collapse(chosenX, chosenY); //leave 1 in dictionary
+            Debug.Log("collapse");
             //check if every tile is "filled" - if it is, then stop the loop
             doneGenerating = checkGeneration();
         }
+        Debug.Log("done generating");
         //put gameObjects in each spot with spawn();
+        spawn();
     }
 
     private bool checkGeneration ()
@@ -164,7 +173,30 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         return randNum;
     }
 
-    private void Collapse (int posX, int posY)
+    private void collapse (int x, int y)
+    {
+        int items = roomMatrix[x, y].Count;
+        Debug.Log("count:" + items);
+        if(items > 1)
+        {
+            int rnd = Random.Range(0, items - 1);
+            Debug.Log("chosen tile:" + rnd);
+            for (int i = items-1; i >= 0; i--)
+            {
+                if(i != rnd)
+                {
+                    roomMatrix[x, y].Remove(roomMatrix[x, y].ElementAt(i).Key);
+                    Debug.Log("remove");
+                }
+                Debug.Log("dont remove");
+            }
+            Debug.Log("done removing");
+        }
+        Debug.Log(roomMatrix[x, y].Count);
+        boolGeneratedMatrix[x, y] = true;
+    }
+
+    private void Propagate (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
