@@ -45,11 +45,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         if (!superpositionDone)
             SuperPosition();
 
-        findEntropy();
-        chooseCoords();
-        //roomMatrix[0, 0] = helperFunctions.testDictionary;
-        //Collapse(1, 0);
-        Collapse(Propagate(chosenX, chosenY));
         bool doneGenerating = false;
 
         while (doneGenerating == false)
@@ -66,12 +61,13 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             findEntropy();
             //choose one of them
             chooseCoords();
-            //say what tile should be there with the collapse function
+            //choose a tile to go there
+
             //collapse(chosenX, chosenY);
             //check if every tile is "filled" - if it is, then stop the loop
             doneGenerating = checkGeneration();
         }
-        //put gmaeObjects in each spot with spawn();
+        //put gameObjects in each spot with spawn();
     }
 
     private bool checkGeneration ()
@@ -113,7 +109,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
                 Debug.Log("Filled: " + x + " " + y);
             }
         }
-            superpositionDone = true;
+        superpositionDone = true;
     }
 
     private void findEntropy()  // find tile(s) with lowest entropy (the lowest number of possible solutions)
@@ -168,7 +164,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         return randNum;
     }
 
-    private void Propagate (int posX, int posY)
+    private void Collapse (int posX, int posY)
     {
         bool topTile = false;
         bool leftTile = false;
@@ -310,18 +306,6 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         foreach (GameObject z in notAllowed)
         {
             result += (z.name + ", ");
-        }
-        Debug.Log(result);
-            
-        return notAllowed;
-
-        // add cross out here (ish). modulate
-    }
-
-    private void Collapse(List<GameObject> notAllowed)
-    {
-        
-        // make sure 2D bool matrix is also updated
         }*/
     }
 }
