@@ -6,8 +6,8 @@ using System.Linq;
 public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
-    private static int roomDimension = 2;   // room tiles are square
-    private int totalTiles = 4;          // !!
+    private static int roomDimension = 15;   // room tiles are square
+    private int totalTiles = roomDimension*roomDimension;          // !!
 
     private bool superpositionDone = false;
 
@@ -76,7 +76,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         }
         Debug.Log("done generating");
         //put gameObjects in each spot with spawn();
-        spawn();
+        //spawn();
     }
 
     private bool checkGeneration ()
@@ -130,14 +130,14 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             for (int y = 0; y < roomDimension; y++)
             {
-                if (roomMatrix[x, y].Count < lowestEntropyAmount)     // num of items in dict < LEA
+                if (roomMatrix[x, y].Count < lowestEntropyAmount && boolGeneratedMatrix[x, y] == false)     // num of items in dict < LEA
                 {
                     lowestEntropyAmount = roomMatrix[x, y].Count;   // set lowEA to new lowest entropy
                     lowestEntropyCoords.Clear();    // since there is a new lowest entropy clear the prev list coords
                     lowestEntropyCoords.Add(x);
                     lowestEntropyCoords.Add(y);     // add new x y coords to the list
                 }
-                else if (roomMatrix[x, y].Count == lowestEntropyAmount)     //an item with equal entropy to lowestEA
+                else if (roomMatrix[x, y].Count == lowestEntropyAmount && boolGeneratedMatrix[x, y] == false)     //an item with equal entropy to lowestEA
                 {
                     lowestEntropyCoords.Add(x);
                     lowestEntropyCoords.Add(y);
