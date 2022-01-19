@@ -6,7 +6,7 @@ using System.Linq;
 public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
-    private static int roomDimension = 15;   // room tiles are square
+    private static int roomDimension = 25;   // room tiles are square
     private int totalTiles = roomDimension*roomDimension;          // !!
 
     private bool superpositionDone = false;
@@ -48,6 +48,9 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             SuperPosition();
         Debug.Log("superposition done");
 
+        //place any tiles manually here
+        ForcePlace();
+
         bool doneGenerating = false;
 
         while (doneGenerating == false)
@@ -57,8 +60,11 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
             {
                 for(int x = 0; x < roomDimension; x++)
                 {
-                    Propagate(x, y);
-                    Debug.Log("propagate");
+                    if (boolGeneratedMatrix[x, y] == false)
+                    {
+                        Propagate(x, y);
+                        Debug.Log("propagate");
+                    }
                 }
             }
             //find the tile(s) with the smallest dictionaries
@@ -76,7 +82,12 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         }
         Debug.Log("done generating");
         //put gameObjects in each spot with spawn();
-        //spawn();
+        spawn();
+    }
+
+    private void ForcePlace ()
+    {
+
     }
 
     private bool checkGeneration ()
@@ -203,17 +214,17 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         bool rightTile = false;
         bool bottomTile = false;
 
-        if(posX >= 0 && posY - 1 >= 0)
+        if(posX >= 0 && posY - 1 >= 0 && boolGeneratedMatrix[posX, posY - 1] == true)
         {
             topTile = true;
         }
 
-        if(posX -1 >= 0 && posY >= 0)
+        if(posX -1 >= 0 && posY >= 0 && boolGeneratedMatrix[posX -1, posY] == true)
         {
             leftTile = true;
         }
 
-        if(posX + 1 < roomDimension && posY >= 0)
+        if(posX + 1 < roomDimension && posY >= 0 && boolGeneratedMatrix[posX + 1, posY] == true)
         {
             rightTile = true;
         }
@@ -312,6 +323,8 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             newDictionary.Add(tile.name, tile);
         }
+
+        //pull out what isnt allowed from the tiles that ARE there
 
         roomMatrix[posX, posY] = newDictionary;
 
