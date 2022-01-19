@@ -6,6 +6,7 @@ using System.Linq;
 public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
+    public int dimension = 25;
     public static int roomDimension = 25;   // room tiles are square
     private int totalTiles = roomDimension*roomDimension;          // !!
 
@@ -21,16 +22,21 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     private int chosenY;
 
     // room tile rules
-
+    public int exitsToGenerate = 1;
+    public int entrancesToGenerate = 1;
 
     // refrence the helpers
     public GameObject helperObject;
     HelperFunctions helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
 
+    private void Awake()
+    {
+        roomDimension = dimension;
+    }
+
     private void Start()
     {
-
         // copy filledDict into local var
         helperFunctions = helperObject.GetComponent<HelperFunctions>();
         filledDictionary = helperFunctions.filledDictionary;
@@ -184,9 +190,29 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         return randNum;
     }
 
+    //only need to check neighbors of a collapsed tile, not every single one of them over and over?
+
     private void collapse (int x, int y)
     {
         int items = roomMatrix[x, y].Count;
+        //take out tiles based on rules
+        /*if (entrancesToGenerate == 0)
+        {
+            for(int i = items; i >= 0; i--)
+            {
+                if (roomMatrix[x, y].ElementAt(i).Value == filledDictionary.ElementAt(2).Value;
+                {
+                    roomMatrix[x, y].Remove(roomMatrix[x, y].ElementAt(i).Key);
+                }
+            }
+        }
+        if(exitsToGenerate == 0)
+        {
+
+        }*/
+
+        //pick one randomly
+        items = roomMatrix[x, y].Count;
         Debug.Log("count:" + items);
         if(items > 1)
         {
@@ -323,6 +349,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         {
             newDictionary.Add(tile.name, tile);
         }
+        //newDictionary = newDictionary.Intersect(filledDictionary);
 
         //pull out what isnt allowed from the tiles that ARE there
 
