@@ -6,7 +6,7 @@ using System.Linq;
 public class RoomWFC : MonoBehaviour    // simple tiled WFC
 {
     // VARIABLES -----
-    private static int roomDimension = 25;   // room tiles are square
+    public static int roomDimension = 25;   // room tiles are square
     private int totalTiles = roomDimension*roomDimension;          // !!
 
     private bool superpositionDone = false;
