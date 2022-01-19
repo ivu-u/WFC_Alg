@@ -214,22 +214,22 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
         bool rightTile = false;
         bool bottomTile = false;
 
-        if(posX >= 0 && posY - 1 >= 0 && boolGeneratedMatrix[posX, posY - 1] == true)
+        if(posX >= 0 && posY - 1 >= 0)
         {
             topTile = true;
         }
 
-        if(posX -1 >= 0 && posY >= 0 && boolGeneratedMatrix[posX -1, posY] == true)
+        if(posX -1 >= 0 && posY >= 0)
         {
             leftTile = true;
         }
 
-        if(posX + 1 < roomDimension && posY >= 0 && boolGeneratedMatrix[posX + 1, posY] == true)
+        if(posX + 1 < roomDimension && posY >= 0)
         {
             rightTile = true;
         }
 
-        if((posX >= 0 && posY + 1 < roomDimension) && boolGeneratedMatrix[posX, posY+1] == true)
+        if((posX >= 0 && posY + 1 < roomDimension))
         {
             bottomTile = true;
         }
