@@ -31,6 +31,7 @@ public class LevelGeneration : MonoBehaviour
     }
 
     //LEVEL_GENERATION----------------------------------------------------------------------------
+    /*
     private void Move()
     {
         if (direction == 1 || direction == 2)   // move right
@@ -111,4 +112,5 @@ public class LevelGeneration : MonoBehaviour
             }
         }
     }
+    */
 }
