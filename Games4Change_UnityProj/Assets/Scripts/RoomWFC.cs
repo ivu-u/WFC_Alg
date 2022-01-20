@@ -27,7 +27,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
 
     // refrence the helpers
     public GameObject helperObject;
-    HelperFunctions helperFunctions;
+    oldHelpers helperFunctions;
     public Dictionary<string, GameObject> filledDictionary;
 
     private void Awake()
@@ -38,7 +38,7 @@ public class RoomWFC : MonoBehaviour    // simple tiled WFC
     private void Start()
     {
         // copy filledDict into local var
-        helperFunctions = helperObject.GetComponent<HelperFunctions>();
+        helperFunctions = helperObject.GetComponent<oldHelpers>();
         filledDictionary = helperFunctions.filledDictionary;
         Generate();
     }

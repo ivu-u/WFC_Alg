@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HelperFunctions : MonoBehaviour
+public class oldHelpers : MonoBehaviour
 {
     // make a dictionary that contains all possible solutions
     public Dictionary<string, GameObject> filledDictionary = new Dictionary<string, GameObject>();

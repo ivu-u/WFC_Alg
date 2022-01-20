@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class NewTile : MonoBehaviour
 {
-    [Header("Allowed Above")]
-    public GameObject[] aboveList;
+    // what is allowed on each side of the tile (since it is initially filled with all possibiilites all
+    // tiles are initially posible (they will get slowly crossed out as possibilities are removed
+    public HashSet<string> allowedAbove;
+    public HashSet<string> allowedBelow;
+    public HashSet<string> allowedLeft;
+    public HashSet<string> allowedRight;
 
-    [Header("Allowed Below")]
-    public GameObject[] aboveBelow;
+    public HashSet<string> possibilities;  // what can be placed inside of THIS tile - this is determined by what is allowed by the side rules of other tiles
+                                    // what is allowed to the sides of this tile - this is changed by what can be placed inside of this tile
 
-    [Header("Allowed Left")]
-    public GameObject[] leftList;
-
-    [Header("Allowed Right")]
-    public GameObject[] rightList;
-
-    public int entropy;
-    public string[] possibilities;
+    // entrpy can be found with possibilities.count
+    
     public int positionX;
     public int positionY;
-
 }
