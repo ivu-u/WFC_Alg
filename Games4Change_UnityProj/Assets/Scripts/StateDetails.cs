@@ -6,4 +6,6 @@ public class StateDetails : MonoBehaviour
 {
     //list of all the states we want to hold
     public Dictionary<string, NewTileTemplate> masterTypes = new Dictionary<string, NewTileTemplate>();
+
+    //initialize dictionary
 }
