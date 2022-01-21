@@ -7,9 +7,11 @@ public class NewWFC : MonoBehaviour
     public static int roomDimension;
     //2d array of x,y to hold information for each tile until it is spawned
     public NewNode[,] roomMatrix = new NewNode[roomDimension, roomDimension];
+    int totalTiles = roomDimension * roomDimension;
+    int generated = 0;
 
     //queue/stack to hold items to propagate (dirty things to check)
-    //bool for if all the nodes are generated
+    bool generationComplete = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +29,13 @@ public class NewWFC : MonoBehaviour
             //Propagate - cross off all the things in the queue
             Propagate();
             //Find Entropy - find the lowest entropy(s) and place their coordinates in a list (list of arrays)
-            FindEntropy();
+            List<int> coordList = FindEntropy();
             //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
+            int[] coordToCollapse = ChooseCoordinates(coordList);
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
+            Collapse(coordToCollapse);
             //check generation - see if all nodes have been filled with a state
+            generationComplete = CheckGenerationCompletion();
     }
 
     void InitializeSuperPositions ()
@@ -60,10 +65,10 @@ public class NewWFC : MonoBehaviour
         //get intersection of what all of those are allowed for this node's position - set that to newPossibilities
         //update newPossibilities based on that (new variable)
             //for each node in possiblities
+                //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
                 //tileplacementrules.getAllowed("tileType", "direction"); -- is this the same as the second to last line in this function
         //if newPossiblities count is less than old possiblities count
             //set dirtyReturn to true
-        //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
         return dirtyReturn;
     }
 
@@ -84,12 +89,46 @@ public class NewWFC : MonoBehaviour
         return coords;
     }
 
-    int[] ChooseCoordinates()
+    int[] ChooseCoordinates(List<int> coords)
     {
         //coordinate array to return
         int [] f = new int[2];
 
+        /*
+        if (lowestEntropyCoords.Count == 2) // if only one choice
+        {
+            chosenX = lowestEntropyCoords[0];
+            chosenY = lowestEntropyCoords[1];
+        }
+        else   // choose a random tile
+        {
+            int randNum = generateRandom();
+            chosenX = lowestEntropyCoords[randNum];
+            chosenY = lowestEntropyCoords[randNum + 1];
+        }*/
+
         //return coordinates
         return f;
+    }
+
+    void Collapse(int[] coordinateToCollapse)
+    {
+        //get possiblities of coordinate
+        //randomly pick 1
+        //cross out all but that possiblity
+        //update node label
+        //update node generation bool
+        //update what is allowed on each side of the node (call a function on it that gets the rules from the master list - string to state)
+        //add adjacent tiles to the queue
+        generated++;
+    }
+
+    bool CheckGenerationCompletion ()
+    {
+        if(generated == totalTiles)
+        {
+            return true;
+        }
+        return false;
     }
 }

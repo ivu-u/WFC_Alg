@@ -340,4 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0289ba8237917474d8281d4cf581f200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dimension: 25
+  exitsToGenerate: 1
+  entrancesToGenerate: 1
   helperObject: {fileID: 821077674}
