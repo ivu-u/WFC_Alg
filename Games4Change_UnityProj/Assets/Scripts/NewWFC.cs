@@ -80,10 +80,12 @@ public class NewWFC : MonoBehaviour
         //int for lowest entropyAmount that is set to 100 or something initially
         //loop x
             //loop y
-                //if (x,y).node.possibilities < entropyAmount
+                //if(x,y).node.possibilities == 1
+                    //collapse(x,y)
+                //else if (x,y).node.possibilities < entropyAmount
                     //clear the list
                     //add this coordinate to list
-                //if (x,y).node.possibilities == entropyAmount
+                //else if (x,y).node.possibilities == entropyAmount
                     //add this coordinate to list
         //return coordinates list
         return coords;
