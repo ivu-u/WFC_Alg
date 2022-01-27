@@ -9,6 +9,7 @@ public class NewNode : MonoBehaviour
 
     //label
     public string label;
+    StateDetails masterList = GameObject.FindObjectsWithTag("Dictionary");
 
     bool collapsed = false;
 
@@ -23,4 +24,39 @@ public class NewNode : MonoBehaviour
 
     public int positionX;
     public int positionY;
+
+    public NewNode(int x, int y)
+    {
+        label = null;
+        possibilities = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        allowedAbove = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        allowedBelow = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        allowedLeft = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        allowedRight = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        positionX = x;
+        positionY = y;
+    }
+
+    public void updateAdjacency() 
+    {
+        allowedAbove = allowedAbove.Clear();
+        foreach(string item in possibilities) {
+            allowedAbove = allowedAbove.UnionWith(masterList.masterTypes.TryGetValue(item).allowedAbove);
+        }
+
+        allowedBelow = allowedBelow.Clear();
+        foreach(string item in possibilities) {
+            allowedBelow = allowedBelow.UnionWith(masterList.masterTypes.TryGetValue(item).allowedBelow);
+        }
+
+        allowedLeft = allowedLeft.Clear();
+        foreach(string item in possibilities) {
+            allowedLeft = allowedLeft.UnionWith(masterList.masterTypes.TryGetValue(item).allowedLeft);
+        }
+
+        allowedRight = allowedRight.Clear();
+        foreach(string item in possibilities) {
+            allowedRight = allowedRight.UnionWith(masterList.masterTypes.TryGetValue(item).allowedRight);
+        }
+    }
 }

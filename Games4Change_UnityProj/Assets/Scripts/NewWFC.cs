@@ -10,6 +10,12 @@ public class NewWFC : MonoBehaviour
     int totalTiles = roomDimension * roomDimension;
     int generated = 0;
 
+    //array for filled list
+    public NewTileTemplate[] filledList;
+
+    // queue for dirty tiles
+    Queue<NewNode> dirty = new Queue<NewNode>();
+
     //queue/stack to hold items to propagate (dirty things to check)
     bool generationComplete = false;
 
@@ -23,9 +29,11 @@ public class NewWFC : MonoBehaviour
     {
         //Initialzie all the nodes - go through array filling possibility list and allowed NEWS
         InitializeSuperPositions();
+
         //Place any states manually in the nodes before wave function generation starts
         ForcePlace(); //constrain to (single) vs constrain from (remove 1)
-        //While not fully generated: 
+        
+        while(generated < totalTiles) {
             //Propagate - cross off all the things in the queue
             Propagate();
             //Find Entropy - find the lowest entropy(s) and place their coordinates in a list (list of arrays)
@@ -36,26 +44,48 @@ public class NewWFC : MonoBehaviour
             Collapse(coordToCollapse);
             //check generation - see if all nodes have been filled with a state
             generationComplete = CheckGenerationCompletion();
+        }
     }
 
     void InitializeSuperPositions ()
     {
         //this script will set every gameobject in roommatrix with default values based on their (x,y) and filling all possible states
+        for(int y = 0; y < roomDimension; y++) 
+        {
+            for(int x = 0; x < roomDimension; x++) 
+            {
+                roomMatrix[y, x] = new NewNode(x, y);
+            }
+        }
     }
 
     void ForcePlace ()
     {
         //eseentially collapse a specific state to a specific node in specific place
+
+        //
+        roomMatrix[0, 0].possibilities = new HashSet<string>("wallTile");
+        roomMatrix[0, 0].updateAdjacency();
+
+        generated++;
     }
 
     void Propagate ()
     {
-        //while queue length is greater than 0
-            //save item in queue (x,y) to appropriate nodeVar
-            //pop queue to remove that posiion 
-            //check what is Allowed to be there - bool dirty = crossOff();
-            //if it came back dirty (crossed something off)
+        while (dirty.Count > 0)
+        {
+            // save (x,y) value of node to use later
+            int x = dirty.Peek.positionX;
+            int y = dirty.Peek.positionY;
+
+            dirty.Dequeue();    //pop queue to remove that posiion 
+
+            bool returnedDirty = crossOff();    //returns true is something was crossed off
+            if(returnedDirty)
+            {
                 //add the node's neighbors to the propagate queue
+            }
+        }
     }
 
     bool CrossOff (NewNode node)
