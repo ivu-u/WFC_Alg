@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class NewWFC : MonoBehaviour
 {
-    public static int roomDimension;
+    HelperFunctions help = new HelperFunctions();
+
+    public int roomDimension = 5;
     //2d array of x,y to hold information for each tile until it is spawned
-    public NewNode[,] roomMatrix = new NewNode[roomDimension, roomDimension];
-    int totalTiles = roomDimension * roomDimension;
+    public NewNode[,] roomMatrix;
+    int totalTiles;
     int generated = 0;
 
     //array for filled list
     public NewTileTemplate[] filledList;
 
     // queue for dirty tiles
-    Queue<NewNode> dirty = new Queue<NewNode>();
+    Stack<NewNode> dirty = new Stack<NewNode>();
 
     //queue/stack to hold items to propagate (dirty things to check)
     bool generationComplete = false;
@@ -22,29 +25,34 @@ public class NewWFC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        roomMatrix = new NewNode[roomDimension, roomDimension];
+        totalTiles = roomDimension * roomDimension;
         Generate();
     }
 
     void Generate ()
     {
-        //Initialzie all the nodes - go through array filling possibility list and allowed NEWS
+        //Initialzie all the nodes - go through array filling all possibilities (superpositions)
         InitializeSuperPositions();
 
-        //Place any states manually in the nodes before wave function generation starts
+        //Place any states manually in the nodes before wave function generation starts (collapse to 1)
         ForcePlace(); //constrain to (single) vs constrain from (remove 1)
         
-        while(generated < totalTiles) {
+        //while(generated < totalTiles) 
+        //{
+            Debug.Log("begin generating");
             //Propagate - cross off all the things in the queue
             Propagate();
             //Find Entropy - find the lowest entropy(s) and place their coordinates in a list (list of arrays)
             List<int> coordList = FindEntropy();
-            //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
-            int[] coordToCollapse = ChooseCoordinates(coordList);
-            //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
-            Collapse(coordToCollapse);
-            //check generation - see if all nodes have been filled with a state
-            generationComplete = CheckGenerationCompletion();
-        }
+            // //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
+            // int[] coordToCollapse = ChooseCoordinates(coordList);
+            // //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
+            // Debug.Log("ready to collapse");
+            // Collapse(coordToCollapse);
+            // //check generation - see if all nodes have been filled with a state
+            // generationComplete = CheckGenerationCompletion();
+        //}
     }
 
     void InitializeSuperPositions ()
@@ -54,20 +62,26 @@ public class NewWFC : MonoBehaviour
         {
             for(int x = 0; x < roomDimension; x++) 
             {
-                roomMatrix[y, x] = new NewNode(x, y);
+                roomMatrix[y, x] = new NewNode(y, x);
             }
         }
+        Debug.Log("Superpositions initialize function done");
     }
 
     void ForcePlace ()
     {
-        //eseentially collapse a specific state to a specific node in specific place
-
-        //
-        roomMatrix[0, 0].possibilities = new HashSet<string>("wallTile");
+        //essentially collapse a specific state to a specific node in specific place
+        string[] initial = { "voidTile" };
+        roomMatrix[0, 0].possibilities = new HashSet<string>(initial);
         roomMatrix[0, 0].updateAdjacency();
+        roomMatrix[0, 0].isCollapsed = true;
+        dirty.Push(roomMatrix[1, 0]);
+        dirty.Push(roomMatrix[0, 1]);
 
         generated++;
+        Debug.Log("Force place function done");
+        Debug.Log(roomMatrix[0, 0].possibilities.First());
+        help.dumpMatrix(roomMatrix);
     }
 
     void Propagate ()
@@ -75,30 +89,92 @@ public class NewWFC : MonoBehaviour
         while (dirty.Count > 0)
         {
             // save (x,y) value of node to use later
-            int x = dirty.Peek.positionX;
-            int y = dirty.Peek.positionY;
+            int x = dirty.Peek().positionX;
+            int y = dirty.Peek().positionY;
 
-            dirty.Dequeue();    //pop queue to remove that posiion 
+            dirty.Pop();    //pop stack to remove that posiion 
 
-            bool returnedDirty = crossOff();    //returns true is something was crossed off
-            if(returnedDirty)
-            {
-                //add the node's neighbors to the propagate queue
-            }
+            CrossOff(y, x);    //returns true is something was crossed off
+            Debug.Log("crossed off ("+ y +", " + x +")");
         }
     }
 
-    bool CrossOff (NewNode node)
+    bool CrossOff (int y, int x)
     {
         bool dirtyReturn = false;
+        string[] full = { "groundTile", "wallTile", "exitTile", "entranceTile", "voidTile" };
+        HashSet<string> newPossibilities = new HashSet<string>(full);
+
         //get node to the up, down, left, right
+        bool above = false;
+        bool below = false;
+        bool left = false;
+        bool right = false;
+
+        if(x-1 >= 0)
+        {
+            left = true;
+        }
+        if(x+1 < roomDimension)
+        {
+            right = true;
+        }
+        if(y-1 >= 0)
+        {
+            above = true;
+        }
+        if(y+1 < roomDimension)
+        {
+            below = true;
+        }
+
         //get intersection of what all of those are allowed for this node's position - set that to newPossibilities
         //update newPossibilities based on that (new variable)
-            //for each node in possiblities
-                //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
-                //tileplacementrules.getAllowed("tileType", "direction"); -- is this the same as the second to last line in this function
+        if (above)
+        {
+            newPossibilities.IntersectWith(roomMatrix[y - 1, x].allowedBelowThisNode);
+        }
+        if (below)
+        {
+            newPossibilities.IntersectWith(roomMatrix[y + 1, x].allowedAboveThisNode);
+        }
+        if (left)
+        {
+            newPossibilities.IntersectWith(roomMatrix[y, x-1].allowedRightThisNode);
+        }
+        if (right)
+        {
+            newPossibilities.IntersectWith(roomMatrix[y, x+1].allowedLeftThisNode);
+        }
+
         //if newPossiblities count is less than old possiblities count
-            //set dirtyReturn to true
+        //set dirtyReturn to true
+        if (newPossibilities.Count != roomMatrix[y, x].possibilities.Count)
+        {
+            dirtyReturn = true;
+            roomMatrix[y, x].possibilities = newPossibilities;
+        }
+
+        //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
+        if (dirtyReturn == true)
+        {
+            if(above)
+            {
+                dirty.Push(roomMatrix[y - 1, x]);
+            }
+            if(below)
+            {
+                dirty.Push(roomMatrix[y + 1, x]);
+            }
+            if(left)
+            {
+                dirty.Push(roomMatrix[y, x - 1]);
+            }
+            if(right)
+            {
+                dirty.Push(roomMatrix[y, x + 1]);
+            }
+        }
         return dirtyReturn;
     }
 
@@ -106,41 +182,65 @@ public class NewWFC : MonoBehaviour
     {
         //list of coords with the lowest entropy
         List<int> coords = new List<int>();
-        //clear list
-        //int for lowest entropyAmount that is set to 100 or something initially
-        //loop x
-            //loop y
-                //if(x,y).node.possibilities == 1
-                    //collapse(x,y)
-                //else if (x,y).node.possibilities < entropyAmount
-                    //clear the list
-                    //add this coordinate to list
-                //else if (x,y).node.possibilities == entropyAmount
-                    //add this coordinate to list
-        //return coordinates list
+        
+        int lowestEntropy = 100;    // random high number
+        for (int y = 0; y < roomDimension; y++)
+        {
+            for (int x = 0; x < roomDimension; x++)
+            {
+                if (roomMatrix[y,x].isCollapsed == false && roomMatrix[y,x].possibilities.Count == 1) // if there is only 1 possibility collapse
+                {
+                    //Collapse(x, y);
+                }
+                else if (roomMatrix[y,x].isCollapsed == false && roomMatrix[y,x].possibilities.Count < lowestEntropy) // new lowest entropy tile
+                {
+                    coords.Clear();
+
+                    coords.Add(y);
+                    coords.Add(x);
+                    lowestEntropy = roomMatrix[y,x].possibilities.Count;
+                }
+                else if (roomMatrix[y,x].isCollapsed == false && roomMatrix[y,x].possibilities.Count == lowestEntropy)    // equal entropy
+                {
+                    coords.Add(y);
+                    coords.Add(x);
+                }
+            }
+        }
+        Debug.Log("lowest entropy: " + lowestEntropy);
+        Debug.Log("coords with lowest entropy count: "+coords.Count/2);
         return coords;
     }
 
-    int[] ChooseCoordinates(List<int> coords)
+    int[] ChooseCoordinates(List<int> lowestEntropyCoords)
     {
         //coordinate array to return
         int [] f = new int[2];
 
-        /*
+        
         if (lowestEntropyCoords.Count == 2) // if only one choice
         {
-            chosenX = lowestEntropyCoords[0];
-            chosenY = lowestEntropyCoords[1];
+            f[0] = lowestEntropyCoords[0];
+            f[1] = lowestEntropyCoords[1];
         }
         else   // choose a random tile
         {
-            int randNum = generateRandom();
-            chosenX = lowestEntropyCoords[randNum];
-            chosenY = lowestEntropyCoords[randNum + 1];
-        }*/
+            int randNum = generateRandom(lowestEntropyCoords);
+            f[0] = lowestEntropyCoords[randNum];
+            f[1] = lowestEntropyCoords[randNum + 1];
+        }
 
         //return coordinates
+        Debug.Log("chosen coords: (" + f[0] + ", " + f[1] + ")");
         return f;
+    }
+
+    public int generateRandom(List<int> lowestEntropyCoords)
+    {
+        int randNum = Random.Range(0, lowestEntropyCoords.Count / 2);   // generate an even num
+        randNum = randNum * 2;
+
+        return randNum;
     }
 
     void Collapse(int[] coordinateToCollapse)
@@ -152,6 +252,7 @@ public class NewWFC : MonoBehaviour
         //update node generation bool
         //update what is allowed on each side of the node (call a function on it that gets the rules from the master list - string to state)
         //add adjacent tiles to the queue
+        // update the dirty list (?)
         generated++;
     }
 

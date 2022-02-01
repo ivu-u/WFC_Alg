@@ -9,54 +9,64 @@ public class NewNode : MonoBehaviour
 
     //label
     public string label;
-    StateDetails masterList = GameObject.FindObjectsWithTag("Dictionary");
+    StateDetails masterList = GameObject.FindGameObjectWithTag("Dictionary").GetComponent<StateDetails>();
 
-    bool collapsed = false;
+    public bool isCollapsed = false;
 
     public HashSet<string> possibilities;  // what can be placed inside of THIS node - this is determined by what is allowed by the side rules of other tiles
 
-    public HashSet<string> allowedAbove;
-    public HashSet<string> allowedBelow;
-    public HashSet<string> allowedLeft;
-    public HashSet<string> allowedRight;   // what is allowed to the sides of this node - this is changed by what can be placed inside of this tile - this is what other tiles check
+    public HashSet<string> allowedAboveThisNode;
+    public HashSet<string> allowedBelowThisNode;
+    public HashSet<string> allowedLeftThisNode;
+    public HashSet<string> allowedRightThisNode;   // what is allowed to the sides of this node - this is changed by what can be placed inside of this tile - this is what other tiles check
 
     // entrpy can be found with possibilities.count
 
     public int positionX;
     public int positionY;
 
-    public NewNode(int x, int y)
+    public NewNode(int y, int x)
     {
+        Debug.Log("node at " + y + ", " + x + " has been initialized");
         label = null;
-        possibilities = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
-        allowedAbove = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
-        allowedBelow = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
-        allowedLeft = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
-        allowedRight = new HashSet<string>("groundTile", "voidTile", "wallTile", "exitTile", "entraceTile");
+        string[] all = { "groundTile", "voidTile", "wallTile", "exitTile", "entraceTile" };
+        possibilities = new HashSet<string>(all);
+        allowedAboveThisNode = new HashSet<string>(all);
+        allowedBelowThisNode = new HashSet<string>(all);
+        allowedLeftThisNode = new HashSet<string>(all);
+        allowedRightThisNode = new HashSet<string>(all);
         positionX = x;
         positionY = y;
     }
 
     public void updateAdjacency() 
     {
-        allowedAbove = allowedAbove.Clear();
-        foreach(string item in possibilities) {
-            allowedAbove = allowedAbove.UnionWith(masterList.masterTypes.TryGetValue(item).allowedAbove);
+        allowedAboveThisNode = new HashSet<string>();
+        foreach(string key in possibilities) {
+            NewTileTemplate tile;
+            masterList.masterTypes.TryGetValue(key, out tile);
+            allowedAboveThisNode.UnionWith(tile.allowedAbove);
         }
 
-        allowedBelow = allowedBelow.Clear();
-        foreach(string item in possibilities) {
-            allowedBelow = allowedBelow.UnionWith(masterList.masterTypes.TryGetValue(item).allowedBelow);
+        allowedBelowThisNode = new HashSet<string>();
+        foreach(string key in possibilities) {
+            NewTileTemplate tile;
+            masterList.masterTypes.TryGetValue(key, out tile);
+            allowedBelowThisNode.UnionWith(tile.allowedBelow);
         }
 
-        allowedLeft = allowedLeft.Clear();
-        foreach(string item in possibilities) {
-            allowedLeft = allowedLeft.UnionWith(masterList.masterTypes.TryGetValue(item).allowedLeft);
+        allowedLeftThisNode = new HashSet<string>();
+        foreach(string key in possibilities) {
+            NewTileTemplate tile;
+            masterList.masterTypes.TryGetValue(key, out tile);
+            allowedLeftThisNode.UnionWith(tile.allowedLeft);
         }
 
-        allowedRight = allowedRight.Clear();
-        foreach(string item in possibilities) {
-            allowedRight = allowedRight.UnionWith(masterList.masterTypes.TryGetValue(item).allowedRight);
+        allowedRightThisNode = new HashSet<string>();
+        foreach(string key in possibilities) {
+            NewTileTemplate tile;
+            masterList.masterTypes.TryGetValue(key, out tile);
+            allowedRightThisNode.UnionWith(tile.allowedRight);
         }
     }
 }
