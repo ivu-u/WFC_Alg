@@ -8,7 +8,7 @@ public class NewWFC : MonoBehaviour
     int propagateRun = 0;
     HelperFunctions help = new HelperFunctions();
 
-    public int roomDimension = 3;
+    public int roomDimension;
     //2d array of x,y to hold information for each tile until it is spawned
     public NewNode[,] roomMatrix;
     int totalTiles;
@@ -58,6 +58,8 @@ public class NewWFC : MonoBehaviour
             Collapse(coordToCollapse);
         }
         help.dumpMatrix(roomMatrix);
+        Debug.Log(roomMatrix[24,0].label);
+        this.gameObject.GetComponent<TilePainter>().makeTiles(roomMatrix);
     }
 
     void InitializeSuperPositions ()
@@ -76,17 +78,18 @@ public class NewWFC : MonoBehaviour
     void ForcePlace ()
     {
         //essentially collapse a specific state to a specific node in specific place
-        string[] initial = { "voidTile" };
+        string[] initial = { "wallTile" };
         roomMatrix[0, 0].possibilities = new HashSet<string>(initial);
         roomMatrix[0, 0].updateAdjacency();
         roomMatrix[0, 0].isCollapsed = true;
+        roomMatrix[0, 0].label = "wallTile";
         dirty.Push(roomMatrix[1, 0]);
         dirty.Push(roomMatrix[0, 1]);
 
         generated++;
         Debug.Log("Force place function done");
         Debug.Log(roomMatrix[0, 0].possibilities.First());
-
+        //this.GetComponent<TilePainter>().spawnTiles(roomMatrix[0, 0]);
     }
 
     void Propagate ()
@@ -320,14 +323,8 @@ public class NewWFC : MonoBehaviour
         
         //update generated count
         generated++;
-    }
 
-    bool CheckGenerationCompletion ()
-    {
-        if(generated == totalTiles)
-        {
-            return true;
-        }
-        return false;
+        //paint
+        //this.gameObject.GetComponent<TilePainter>().spawnTiles(roomMatrix[y,x]);
     }
 }
