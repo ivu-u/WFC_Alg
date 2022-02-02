@@ -5,9 +5,10 @@ using System.Linq;
 
 public class NewWFC : MonoBehaviour
 {
+    int propagateRun = 0;
     HelperFunctions help = new HelperFunctions();
 
-    public int roomDimension = 5;
+    public int roomDimension = 3;
     //2d array of x,y to hold information for each tile until it is spawned
     public NewNode[,] roomMatrix;
     int totalTiles;
@@ -28,6 +29,7 @@ public class NewWFC : MonoBehaviour
         roomMatrix = new NewNode[roomDimension, roomDimension];
         totalTiles = roomDimension * roomDimension;
         Generate();
+        //Debug.Log(roomMatrix.Length);
     }
 
     void Generate ()
@@ -37,27 +39,25 @@ public class NewWFC : MonoBehaviour
 
         //Place any states manually in the nodes before wave function generation starts (collapse to 1)
         ForcePlace(); //constrain to (single) vs constrain from (remove 1)
+
+        help.dumpMatrix(roomMatrix);
         
-        //while(generated < totalTiles) 
-        //{
+        while(generated < totalTiles) 
+        {
             Debug.Log("begin generating");
             //Propagate - cross off all the things in the queue
-            help.dumpMatrix(roomMatrix);
             Propagate();
-            help.dumpMatrix(roomMatrix);
+
             //Find Entropy - find the lowest entropy(s) and place their coordinates in a list (list of arrays)
             List<int> coordList = FindEntropy();
-            help.dumpMatrix(roomMatrix);
+
             //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
             int[] coordToCollapse = ChooseCoordinates(coordList);
-            help.dumpMatrix(roomMatrix);
+
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
-            help.dumpMatrix(roomMatrix);
             Collapse(coordToCollapse);
-            help.dumpMatrix(roomMatrix);
-            // //check generation - see if all nodes have been filled with a state
-            // generationComplete = CheckGenerationCompletion();
-        //}
+        }
+        help.dumpMatrix(roomMatrix);
     }
 
     void InitializeSuperPositions ()
@@ -86,7 +86,7 @@ public class NewWFC : MonoBehaviour
         generated++;
         Debug.Log("Force place function done");
         Debug.Log(roomMatrix[0, 0].possibilities.First());
-        help.dumpMatrix(roomMatrix);
+
     }
 
     void Propagate ()
@@ -100,11 +100,13 @@ public class NewWFC : MonoBehaviour
             dirty.Pop();    //pop stack to remove that posiion 
 
             Debug.Log("before cross off: ");
-            help.dumpMatrix(roomMatrix);
+            //help.dumpMatrix(roomMatrix);
             CrossOff(y, x);    //returns true is something was crossed off
             Debug.Log("after cross off: ");
-            help.dumpMatrix(roomMatrix);
+            //help.dumpMatrix(roomMatrix);
             //Debug.Log("crossed off ("+ y +", " + x +")");
+            propagateRun++;
+            Debug.Log("total propagations: " + propagateRun);
         }
     }
 
@@ -299,19 +301,19 @@ public class NewWFC : MonoBehaviour
             below = true;
         }
 
-        if(above)
+        if(above && roomMatrix[y - 1, x].isCollapsed == false)
         {
             dirty.Push(roomMatrix[y - 1, x]);
         }
-        if(below)
+        if(below && roomMatrix[y + 1, x].isCollapsed == false)
         {
             dirty.Push(roomMatrix[y + 1, x]);
         }
-        if(left)
+        if(left && roomMatrix[y, x - 1].isCollapsed == false)
         {
             dirty.Push(roomMatrix[y, x - 1]);
         }
-        if(right)
+        if(right && roomMatrix[y, x + 1].isCollapsed == false)
         {
             dirty.Push(roomMatrix[y, x + 1]);
         }
