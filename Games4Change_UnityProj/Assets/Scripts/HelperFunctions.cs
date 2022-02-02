@@ -23,7 +23,7 @@ public class HelperFunctions : MonoBehaviour
                 if (!matrix[i,j].isCollapsed)
                 {
                     sb.Append(-1);
-                    sb.Append(' ');				   
+                    sb.Append(",");				   
                 }
                 else
                 {
@@ -31,23 +31,23 @@ public class HelperFunctions : MonoBehaviour
                     {
                         case "wallTile":
                             sb.Append(1);
-                            sb.Append(", ");
+                            sb.Append(",");
                             break;
                         case "voidTile":
                             sb.Append(2);
-                            sb.Append(", ");
+                            sb.Append(",");
                             break;
                         case "groundTile":
                             sb.Append(3);
-                            sb.Append(", ");
+                            sb.Append(",");
                             break;
                         case "entranceTile":
                             sb.Append(4);
-                            sb.Append(", ");
+                            sb.Append(",");
                             break;
                         case "exitTile":
                             sb.Append(5);
-                            sb.Append(", ");
+                            sb.Append(",");
                             break;
                     }
                 }

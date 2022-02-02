@@ -42,14 +42,19 @@ public class NewWFC : MonoBehaviour
         //{
             Debug.Log("begin generating");
             //Propagate - cross off all the things in the queue
+            help.dumpMatrix(roomMatrix);
             Propagate();
+            help.dumpMatrix(roomMatrix);
             //Find Entropy - find the lowest entropy(s) and place their coordinates in a list (list of arrays)
             List<int> coordList = FindEntropy();
-            // //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
-            // int[] coordToCollapse = ChooseCoordinates(coordList);
-            // //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
-            // Debug.Log("ready to collapse");
-            // Collapse(coordToCollapse);
+            help.dumpMatrix(roomMatrix);
+            //Choose Coordinates - take the previous list of coordinates and select a random one to generate at (pick a random array from list)
+            int[] coordToCollapse = ChooseCoordinates(coordList);
+            help.dumpMatrix(roomMatrix);
+            //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
+            help.dumpMatrix(roomMatrix);
+            Collapse(coordToCollapse);
+            help.dumpMatrix(roomMatrix);
             // //check generation - see if all nodes have been filled with a state
             // generationComplete = CheckGenerationCompletion();
         //}
@@ -94,8 +99,12 @@ public class NewWFC : MonoBehaviour
 
             dirty.Pop();    //pop stack to remove that posiion 
 
+            Debug.Log("before cross off: ");
+            help.dumpMatrix(roomMatrix);
             CrossOff(y, x);    //returns true is something was crossed off
-            Debug.Log("crossed off ("+ y +", " + x +")");
+            Debug.Log("after cross off: ");
+            help.dumpMatrix(roomMatrix);
+            //Debug.Log("crossed off ("+ y +", " + x +")");
         }
     }
 
@@ -158,19 +167,19 @@ public class NewWFC : MonoBehaviour
         //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
         if (dirtyReturn == true)
         {
-            if(above)
+            if(above && roomMatrix[y-1, x].isCollapsed == false)
             {
                 dirty.Push(roomMatrix[y - 1, x]);
             }
-            if(below)
+            if(below && roomMatrix[y + 1, x].isCollapsed == false)
             {
                 dirty.Push(roomMatrix[y + 1, x]);
             }
-            if(left)
+            if(left && roomMatrix[y, x - 1].isCollapsed == false)
             {
                 dirty.Push(roomMatrix[y, x - 1]);
             }
-            if(right)
+            if(right && roomMatrix[y, x + 1].isCollapsed == false)
             {
                 dirty.Push(roomMatrix[y, x + 1]);
             }
@@ -190,7 +199,8 @@ public class NewWFC : MonoBehaviour
             {
                 if (roomMatrix[y,x].isCollapsed == false && roomMatrix[y,x].possibilities.Count == 1) // if there is only 1 possibility collapse
                 {
-                    //Collapse(x, y);
+                    int[] array = new int[] {y, x};
+                    Collapse(array);
                 }
                 else if (roomMatrix[y,x].isCollapsed == false && roomMatrix[y,x].possibilities.Count < lowestEntropy) // new lowest entropy tile
                 {
@@ -245,14 +255,68 @@ public class NewWFC : MonoBehaviour
 
     void Collapse(int[] coordinateToCollapse)
     {
+        int y = coordinateToCollapse[0];
+        int x = coordinateToCollapse[1];
         //get possiblities of coordinate
         //randomly pick 1
+        string choice;
+        int randNum = Random.Range(0, roomMatrix[y,x].possibilities.Count);
+        choice = roomMatrix[y,x].possibilities.ElementAt(randNum);
+
         //cross out all but that possiblity
+        roomMatrix[y,x].possibilities = new HashSet<string>();
+        roomMatrix[y,x].possibilities.Add(choice);
+        
         //update node label
+        roomMatrix[y,x].label = choice;
+
         //update node generation bool
+        roomMatrix[y,x].isCollapsed = true;
+
         //update what is allowed on each side of the node (call a function on it that gets the rules from the master list - string to state)
-        //add adjacent tiles to the queue
-        // update the dirty list (?)
+        roomMatrix[y,x].updateAdjacency();
+
+        //add adjacent tiles to the stack
+        bool above = false;
+        bool below = false;
+        bool left = false;
+        bool right = false;
+
+        if(x-1 >= 0)
+        {
+            left = true;
+        }
+        if(x+1 < roomDimension)
+        {
+            right = true;
+        }
+        if(y-1 >= 0)
+        {
+            above = true;
+        }
+        if(y+1 < roomDimension)
+        {
+            below = true;
+        }
+
+        if(above)
+        {
+            dirty.Push(roomMatrix[y - 1, x]);
+        }
+        if(below)
+        {
+            dirty.Push(roomMatrix[y + 1, x]);
+        }
+        if(left)
+        {
+            dirty.Push(roomMatrix[y, x - 1]);
+        }
+        if(right)
+        {
+            dirty.Push(roomMatrix[y, x + 1]);
+        }
+        
+        //update generated count
         generated++;
     }
 
