@@ -56,4 +56,32 @@ public class HelperFunctions : MonoBehaviour
         }
         Debug.Log(sb.ToString());
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            // Casts the ray and get the first game object hit
+            Physics.Raycast(ray, out hit);
+            //GameObject item = hit.collider.gameObject;
+            //Display(item);
+        }
+    }
+
+    void Display(GameObject get)
+    {
+
+    }
+
+    public void CloseWindow ()
+    {
+
+    }
+
+    public void KeepGen ()
+    {
+        this.GetComponent<NewWFC>().canGo = true;
+    }
 }

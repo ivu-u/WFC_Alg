@@ -20,6 +20,7 @@ public class NewWFC : MonoBehaviour
     // queue for dirty tiles
     Stack<NewNode> dirty = new Stack<NewNode>();
     Queue<NewNode> genOrder = new Queue<NewNode>();
+    public bool canGo = false;
 
     //queue/stack to hold items to propagate (dirty things to check)
     bool generationComplete = false;
@@ -44,7 +45,12 @@ public class NewWFC : MonoBehaviour
 
         help.dumpMatrix(roomMatrix);
         
-        while(generated < totalTiles) 
+        
+    }
+
+    private void Update()
+    {
+        if(canGo == true && generated < totalTiles)
         {
             //Propagate - cross off all the things in the queue
             Propagate();
@@ -57,9 +63,9 @@ public class NewWFC : MonoBehaviour
 
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
             Collapse(coordToCollapse);
+
+            //this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
         }
-        help.dumpMatrix(roomMatrix);
-        this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
     }
 
     void InitializeSuperPositions ()
@@ -87,6 +93,7 @@ public class NewWFC : MonoBehaviour
         genOrder.Enqueue(roomMatrix[0, 0]);
 
         generated++;
+        this.GetComponent<TilePainter>().spawnTiles(roomMatrix[0, 0]);
     }
 
     void Propagate ()
@@ -214,6 +221,7 @@ public class NewWFC : MonoBehaviour
                 }
             }
         }
+        Debug.Log("Lowest entropy: " + lowestEntropy);
         return coords;
     }
 
@@ -309,6 +317,9 @@ public class NewWFC : MonoBehaviour
         {
             dirty.Push(roomMatrix[y, x + 1]);
         }
+
+        this.GetComponent<TilePainter>().spawnTiles(roomMatrix[y, x]);
+        canGo = false;
         
         //update generated count
         generated++;
