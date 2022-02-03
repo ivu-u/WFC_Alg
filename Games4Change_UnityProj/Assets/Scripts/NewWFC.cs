@@ -6,7 +6,7 @@ using System.Linq;
 public class NewWFC : MonoBehaviour
 {
     int propagateRun = 0;
-    HelperFunctions help = new HelperFunctions();
+    HelperFunctions help;
 
     public int roomDimension;
     //2d array of x,y to hold information for each tile until it is spawned
@@ -19,6 +19,7 @@ public class NewWFC : MonoBehaviour
 
     // queue for dirty tiles
     Stack<NewNode> dirty = new Stack<NewNode>();
+    Queue<NewNode> genOrder = new Queue<NewNode>();
 
     //queue/stack to hold items to propagate (dirty things to check)
     bool generationComplete = false;
@@ -26,6 +27,7 @@ public class NewWFC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        help = this.GetComponent<HelperFunctions>();
         roomMatrix = new NewNode[roomDimension, roomDimension];
         totalTiles = roomDimension * roomDimension;
         Generate();
@@ -44,7 +46,6 @@ public class NewWFC : MonoBehaviour
         
         while(generated < totalTiles) 
         {
-            Debug.Log("begin generating");
             //Propagate - cross off all the things in the queue
             Propagate();
 
@@ -58,8 +59,7 @@ public class NewWFC : MonoBehaviour
             Collapse(coordToCollapse);
         }
         help.dumpMatrix(roomMatrix);
-        Debug.Log(roomMatrix[24,0].label);
-        this.gameObject.GetComponent<TilePainter>().makeTiles(roomMatrix);
+        this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
     }
 
     void InitializeSuperPositions ()
@@ -72,7 +72,6 @@ public class NewWFC : MonoBehaviour
                 roomMatrix[y, x] = new NewNode(y, x);
             }
         }
-        Debug.Log("Superpositions initialize function done");
     }
 
     void ForcePlace ()
@@ -85,11 +84,9 @@ public class NewWFC : MonoBehaviour
         roomMatrix[0, 0].label = "wallTile";
         dirty.Push(roomMatrix[1, 0]);
         dirty.Push(roomMatrix[0, 1]);
+        genOrder.Enqueue(roomMatrix[0, 0]);
 
         generated++;
-        Debug.Log("Force place function done");
-        Debug.Log(roomMatrix[0, 0].possibilities.First());
-        //this.GetComponent<TilePainter>().spawnTiles(roomMatrix[0, 0]);
     }
 
     void Propagate ()
@@ -101,15 +98,8 @@ public class NewWFC : MonoBehaviour
             int y = dirty.Peek().positionY;
 
             dirty.Pop();    //pop stack to remove that posiion 
-
-            Debug.Log("before cross off: ");
-            //help.dumpMatrix(roomMatrix);
-            CrossOff(y, x);    //returns true is something was crossed off
-            Debug.Log("after cross off: ");
-            //help.dumpMatrix(roomMatrix);
-            //Debug.Log("crossed off ("+ y +", " + x +")");
+            CrossOff(y, x);
             propagateRun++;
-            Debug.Log("total propagations: " + propagateRun);
         }
     }
 
@@ -166,8 +156,10 @@ public class NewWFC : MonoBehaviour
         if (newPossibilities.Count != roomMatrix[y, x].possibilities.Count)
         {
             dirtyReturn = true;
-            roomMatrix[y, x].possibilities = newPossibilities;
+            
         }
+        roomMatrix[y, x].possibilities = newPossibilities;
+        roomMatrix[y, x].updateAdjacency();
 
         //update what is allowed to the right, left, up, down based on if possibilities got updated (dirty is true)
         if (dirtyReturn == true)
@@ -222,8 +214,6 @@ public class NewWFC : MonoBehaviour
                 }
             }
         }
-        Debug.Log("lowest entropy: " + lowestEntropy);
-        Debug.Log("coords with lowest entropy count: "+coords.Count/2);
         return coords;
     }
 
@@ -244,9 +234,6 @@ public class NewWFC : MonoBehaviour
             f[0] = lowestEntropyCoords[randNum];
             f[1] = lowestEntropyCoords[randNum + 1];
         }
-
-        //return coordinates
-        Debug.Log("chosen coords: (" + f[0] + ", " + f[1] + ")");
         return f;
     }
 
@@ -263,6 +250,7 @@ public class NewWFC : MonoBehaviour
         int y = coordinateToCollapse[0];
         int x = coordinateToCollapse[1];
         //get possiblities of coordinate
+        CrossOff(y, x);
         //randomly pick 1
         string choice;
         int randNum = Random.Range(0, roomMatrix[y,x].possibilities.Count);
@@ -271,6 +259,7 @@ public class NewWFC : MonoBehaviour
         //cross out all but that possiblity
         roomMatrix[y,x].possibilities = new HashSet<string>();
         roomMatrix[y,x].possibilities.Add(choice);
+        genOrder.Enqueue(roomMatrix[y, x]);
         
         //update node label
         roomMatrix[y,x].label = choice;

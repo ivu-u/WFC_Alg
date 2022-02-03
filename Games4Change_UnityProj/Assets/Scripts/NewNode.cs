@@ -27,7 +27,6 @@ public class NewNode : MonoBehaviour
 
     public NewNode(int y, int x)
     {
-        Debug.Log("node at " + y + ", " + x + " has been initialized");
         label = null;
         string[] all = { "groundTile", "voidTile", "wallTile", "exitTile", "entraceTile" };
         possibilities = new HashSet<string>(all);
@@ -45,7 +44,13 @@ public class NewNode : MonoBehaviour
         foreach(string key in possibilities) {
             NewTileTemplate tile;
             masterList.masterTypes.TryGetValue(key, out tile);
-            allowedAboveThisNode.UnionWith(tile.allowedAbove);
+            try
+            {
+                allowedAboveThisNode.UnionWith(tile.allowedAbove);
+            } catch
+            {
+                Debug.Log("ERROR NO TILE");
+            }
         }
 
         allowedBelowThisNode = new HashSet<string>();
