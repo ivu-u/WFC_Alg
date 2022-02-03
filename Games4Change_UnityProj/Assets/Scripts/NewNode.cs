@@ -44,13 +44,7 @@ public class NewNode : MonoBehaviour
         foreach(string key in possibilities) {
             NewTileTemplate tile;
             masterList.masterTypes.TryGetValue(key, out tile);
-            try
-            {
-                allowedAboveThisNode.UnionWith(tile.allowedAbove);
-            } catch
-            {
-                Debug.Log("ERROR NO TILE");
-            }
+            allowedAboveThisNode.UnionWith(tile.allowedAbove);
         }
 
         allowedBelowThisNode = new HashSet<string>();

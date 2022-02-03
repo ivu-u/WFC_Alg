@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class StateDetails : MonoBehaviour
 {
-    public GameObject[] templates;
     //list of all the states we want to hold
     public Dictionary<string, NewTileTemplate> masterTypes = new Dictionary<string, NewTileTemplate>();
 
