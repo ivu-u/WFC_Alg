@@ -12,31 +12,36 @@ public class TilePainter : MonoBehaviour
 
     public GameObject[] tiles;
     public float paintDelay;
+    GameObject f;
 
     public void spawnTiles(NewNode n)
     {
         switch(n.label)
         {
             case "wallTile":
-                Instantiate(tiles[0], new Vector3(n.positionY, n.positionX, 0), tiles[0].transform.rotation);
+                f= Instantiate(tiles[0], new Vector3(n.positionY, n.positionX, 0), tiles[0].transform.rotation);
                 break;
 
             case "voidTile":
-                Instantiate(tiles[1], new Vector3(n.positionY, n.positionX, 0), tiles[1].transform.rotation);
+                f = Instantiate(tiles[1], new Vector3(n.positionY, n.positionX, 0), tiles[1].transform.rotation);
                 break;
 
             case "groundTile":
-                Instantiate(tiles[2], new Vector3(n.positionY, n.positionX, 0), tiles[2].transform.rotation);
+                f = Instantiate(tiles[2], new Vector3(n.positionY, n.positionX, 0), tiles[2].transform.rotation);
                 break;
                 
             case "entranceTile":
-                Instantiate(tiles[3], new Vector3(n.positionY, n.positionX, 0), tiles[3].transform.rotation);
+                f = Instantiate(tiles[3], new Vector3(n.positionY, n.positionX, 0), tiles[3].transform.rotation);
                 break;
 
             case "exitTile":
-                Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
+                f = Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
                 break;
         }
+        f.AddComponent<Identify>();
+        f.GetComponent<Identify>().posY = n.positionY;
+        f.GetComponent<Identify>().posX = n.positionX;
+
     }
 
     public void makeTiles (Queue<NewNode> arr)
