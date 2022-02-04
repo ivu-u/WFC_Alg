@@ -86,7 +86,7 @@ public class HelperFunctions : MonoBehaviour
 
     void Display(GameObject get)
     {
-        NewNode n = this.GetComponent<NewWFC>().roomMatrix[get.GetComponent<Identify>().posX, get.GetComponent<Identify>().posY];
+        NewNode n = this.GetComponent<NewWFC>().roomMatrix[get.GetComponent<Identify>().posY, get.GetComponent<Identify>().posX];
         panel.SetActive(true);
         labelText.text = n.label;
         positionText.text = "(" + n.positionY + ", " + n.positionX + ")";
