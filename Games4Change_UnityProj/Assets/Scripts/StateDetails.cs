@@ -9,46 +9,48 @@ public class StateDetails : MonoBehaviour
 
     private void Start() {
         //ground tile
-        string[] all = { "groundTile", "wallTile", "exitTile", "entranceTile", "voidTile" }; ////initialize hashset with an array
+        string[] allGround = { "groundTile", "wallTile", "exitTile", "entranceTile" }; ////initialize hashset with an array
         NewTileTemplate groundTile = new NewTileTemplate
-        ("groundTile", new HashSet<string>(all),
-        new HashSet<string>(all),
-        new HashSet<string>(all),
-        new HashSet<string>(all));
+        ("groundTile", new HashSet<string>(allGround),
+        new HashSet<string>(allGround),
+        new HashSet<string>(allGround),
+        new HashSet<string>(allGround));
         masterTypes.Add(groundTile.label, groundTile);
 
         //void tile
-        string[] voidStart = {"voidTile", "wallTile"}; //initialize hashset with an array
+        string[] allVoid = {"voidTile", "wallTile"}; //initialize hashset with an array
         NewTileTemplate voidTile = new NewTileTemplate
-        ("voidTile", new HashSet<string>(voidStart), 
-        new HashSet<string>(voidStart), 
-        new HashSet<string>(voidStart), 
-        new HashSet<string>(voidStart));
+        ("voidTile", new HashSet<string>(allVoid), 
+        new HashSet<string>(allVoid), 
+        new HashSet<string>(allVoid), 
+        new HashSet<string>(allVoid));
         masterTypes.Add(voidTile.label, voidTile);
 
         //wall tile
+        string[] allWall = { "voidTile", "wallTile", "groundTile", "entranceTile", "exitTile"};
         NewTileTemplate wallTile = new NewTileTemplate
-        ("wallTile", new HashSet<string>(all), 
-        new HashSet<string>(all), 
-        new HashSet<string>(all), 
-        new HashSet<string>(all));
+        ("wallTile", new HashSet<string>(allWall), 
+        new HashSet<string>(allWall), 
+        new HashSet<string>(allWall), 
+        new HashSet<string>(allWall));
         masterTypes.Add(wallTile.label, wallTile);
 
         //entrance tile
-        string[] entranceStart = {"groundTile", "wallTile"}; //initialize hashset with an array
+        string[] allEntrance = {"groundTile", "wallTile"}; //initialize hashset with an array
         NewTileTemplate entranceTile = new NewTileTemplate
-        ("entranceTile", new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart));
+        ("entranceTile", new HashSet<string>(allEntrance), 
+        new HashSet<string>(allEntrance), 
+        new HashSet<string>(allEntrance), 
+        new HashSet<string>(allEntrance));
         masterTypes.Add(entranceTile.label, entranceTile);
 
         //exit tile
+        string[] allExit = { "groundTile", "wallTile" };
         NewTileTemplate exitTile = new NewTileTemplate
-        ("exitTile", new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart), 
-        new HashSet<string>(entranceStart));
+        ("exitTile", new HashSet<string>(allExit), 
+        new HashSet<string>(allExit), 
+        new HashSet<string>(allExit), 
+        new HashSet<string>(allExit));
         masterTypes.Add(exitTile.label, exitTile);
     }
 }
