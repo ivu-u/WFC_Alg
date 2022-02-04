@@ -38,9 +38,6 @@ public class TilePainter : MonoBehaviour
                 f = Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
                 break;
         }
-        f.AddComponent<Identify>();
-        f.GetComponent<Identify>().posY = n.positionY;
-        f.GetComponent<Identify>().posX = n.positionX;
 
     }
 
