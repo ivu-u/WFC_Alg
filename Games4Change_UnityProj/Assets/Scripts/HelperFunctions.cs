@@ -76,7 +76,7 @@ public class HelperFunctions : MonoBehaviour
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
             RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             // Casts the ray and get the first game object hit
-            if (hit.collider != null && hit.collider.gameObject.GetComponent<Identify>() != null) {
+            if (hit.collider != null) {
                 Debug.Log("Run");
                 GameObject item = hit.collider.gameObject;
                 Display(item);
@@ -86,7 +86,7 @@ public class HelperFunctions : MonoBehaviour
 
     void Display(GameObject get)
     {
-        NewNode n = this.GetComponent<NewWFC>().roomMatrix[get.GetComponent<Identify>().posY, get.GetComponent<Identify>().posX];
+        NewNode n = this.GetComponent<NewWFC>().roomMatrix[(int)get.transform.position.y, (int)get.transform.position.x];
         panel.SetActive(true);
         labelText.text = n.label;
         positionText.text = "(" + n.positionY + ", " + n.positionX + ")";
