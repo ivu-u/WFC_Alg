@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 using System.Linq;
+using TMPro;
 
 public class HelperFunctions : MonoBehaviour 
 {
+    //info panel
+    public GameObject panel;
+    public TextMeshProUGUI labelText;
+    public TextMeshProUGUI positionText;
+    public TextMeshProUGUI possibilitiesText;
+    public TextMeshProUGUI allowedLeftText;
+    public TextMeshProUGUI allowedRightText;
+    public TextMeshProUGUI allowedUpText;
+    public TextMeshProUGUI allowedDownText;
+
     //not collapsed - -1
     //wall - 0
     //void - 1
@@ -59,25 +70,61 @@ public class HelperFunctions : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             // Casts the ray and get the first game object hit
-            Physics.Raycast(ray, out hit);
-            //GameObject item = hit.collider.gameObject;
-            //Display(item);
+            if (hit.collider.gameObject.GetComponent<Identify>() != null) {
+                Debug.Log("Run");
+                GameObject item = hit.collider.gameObject;
+                Display(item);
+            }
         }
     }
 
     void Display(GameObject get)
     {
+        NewNode n = this.GetComponent<NewWFC>().roomMatrix[get.GetComponent<Identify>().posX, get.GetComponent<Identify>().posY];
+        panel.SetActive(true);
+        labelText.text = n.label;
+        positionText.text = "(" + n.positionY + ", " + n.positionX + ")";
 
+        possibilitiesText.text = "";
+        foreach (string s in n.possibilities)
+        {
+            possibilitiesText.text += s + "\n\r";
+        }
+
+        allowedUpText.text = "";
+        foreach (string s in n.allowedAboveThisNode)
+        {
+            allowedUpText.text += s + "\n\r";
+        }
+
+        allowedDownText.text = "";
+        foreach (string s in n.allowedBelowThisNode)
+        {
+            allowedDownText.text += s + "\n\r";
+        }
+
+        allowedRightText.text = "";
+        foreach (string s in n.allowedRightThisNode)
+        {
+            allowedRightText.text += s + "\n\r";
+        }
+
+        allowedLeftText.text = "";
+        foreach (string s in n.allowedLeftThisNode)
+        {
+            allowedLeftText.text += s + "\n\r";
+        }
     }
 
     public void CloseWindow ()
     {
-
+        panel.SetActive(false);
     }
 
     public void KeepGen ()

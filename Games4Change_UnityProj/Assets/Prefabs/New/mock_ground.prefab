@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6506695737067969111}
   - component: {fileID: 683951685881365333}
   - component: {fileID: 8746588727123977154}
+  - component: {fileID: -6227019378291369161}
   m_Layer: 0
   m_Name: mock_ground
   m_TagString: Untagged
@@ -116,3 +117,29 @@ MonoBehaviour:
   - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
   - {fileID: 3380984559664285859, guid: c7aea3bb5197b41cc9e6c4ffd2e395a7, type: 3}
   - {fileID: 3205230799869497025, guid: c4f7ff42e7dc74ee38428960a82a77b3, type: 3}
+--- !u!61 &-6227019378291369161
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955395609758550460}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
