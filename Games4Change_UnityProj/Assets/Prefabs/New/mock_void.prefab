@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4232189961944829088}
   - component: {fileID: 5762238822575330329}
-  - component: {fileID: 1647439028476983398}
   - component: {fileID: 6350173544550608976}
   m_Layer: 0
   m_Name: mock_void
@@ -85,30 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1647439028476983398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7451751575615298393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db30719c0e0b4237b536dfadbd7fafa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aboveList:
-  - {fileID: 7451751575615298393}
-  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
-  aboveBelow:
-  - {fileID: 7451751575615298393}
-  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
-  leftList:
-  - {fileID: 7451751575615298393}
-  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
-  rightList:
-  - {fileID: 7451751575615298393}
-  - {fileID: 4868054688313885031, guid: 4652f4f7eeadf422dabf36b1178417e4, type: 3}
 --- !u!61 &6350173544550608976
 BoxCollider2D:
   m_ObjectHideFlags: 0
