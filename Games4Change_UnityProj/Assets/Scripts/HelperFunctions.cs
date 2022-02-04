@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Text;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class HelperFunctions : MonoBehaviour 
 {
@@ -129,6 +130,7 @@ public class HelperFunctions : MonoBehaviour
 
     public void KeepGen ()
     {
-        this.GetComponent<NewWFC>().canGo = true;
+        SceneManager.LoadScene(1);
+        //this.GetComponent<NewWFC>().canGo = true;
     }
 }

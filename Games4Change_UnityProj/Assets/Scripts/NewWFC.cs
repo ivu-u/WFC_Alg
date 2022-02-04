@@ -5,7 +5,6 @@ using System.Linq;
 
 public class NewWFC : MonoBehaviour
 {
-    int propagateRun = 0;
     HelperFunctions help;
 
     public int roomDimension;
@@ -21,9 +20,6 @@ public class NewWFC : MonoBehaviour
     Stack<NewNode> dirty = new Stack<NewNode>();
     Queue<NewNode> genOrder = new Queue<NewNode>();
     public bool canGo = false;
-
-    //queue/stack to hold items to propagate (dirty things to check)
-    bool generationComplete = false;
 
     // Start is called before the first frame update
     void Start()
@@ -43,14 +39,7 @@ public class NewWFC : MonoBehaviour
         //Place any states manually in the nodes before wave function generation starts (collapse to 1)
         ForcePlace(); //constrain to (single) vs constrain from (remove 1)
 
-        help.dumpMatrix(roomMatrix);
-        
-        
-    }
-
-    private void Update()
-    {
-        if(canGo == true && generated < totalTiles)
+        while (generated < totalTiles)
         {
             //Propagate - cross off all the things in the queue
             Propagate();
@@ -63,9 +52,12 @@ public class NewWFC : MonoBehaviour
 
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
             Collapse(coordToCollapse);
-
-            //this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
         }
+
+        this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
+
+        help.dumpMatrix(roomMatrix);
+        
     }
 
     void InitializeSuperPositions ()
@@ -83,11 +75,11 @@ public class NewWFC : MonoBehaviour
     void ForcePlace ()
     {
         //essentially collapse a specific state to a specific node in specific place
-        string[] initial = { "wallTile" };
+        string[] initial = { "voidTile" };
         roomMatrix[0, 0].possibilities = new HashSet<string>(initial);
         roomMatrix[0, 0].updateAdjacency();
         roomMatrix[0, 0].isCollapsed = true;
-        roomMatrix[0, 0].label = "wallTile";
+        roomMatrix[0, 0].label = "voidTile";
         dirty.Push(roomMatrix[1, 0]);
         dirty.Push(roomMatrix[0, 1]);
         genOrder.Enqueue(roomMatrix[0, 0]);
@@ -106,7 +98,6 @@ public class NewWFC : MonoBehaviour
 
             dirty.Pop();    //pop stack to remove that posiion 
             CrossOff(y, x);
-            propagateRun++;
         }
     }
 
@@ -318,7 +309,7 @@ public class NewWFC : MonoBehaviour
             dirty.Push(roomMatrix[y, x + 1]);
         }
 
-        this.GetComponent<TilePainter>().spawnTiles(roomMatrix[y, x]);
+        //this.GetComponent<TilePainter>().spawnTiles(roomMatrix[y, x]);
         canGo = false;
         
         //update generated count

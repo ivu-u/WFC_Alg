@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/sample_generation.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/NewWFCGen.unity
+    guid: 3ea8ad73c4e98442c9877494124ba303
+  - enabled: 1
+    path: Assets/Scenes/reload.unity
+    guid: abe97db864a544cf9a76a7627c82194a
   m_configObjects: {}
