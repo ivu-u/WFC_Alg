@@ -19,23 +19,23 @@ public class TilePainter : MonoBehaviour
         switch(n.label)
         {
             case "wallTile":
-                f= Instantiate(tiles[0], new Vector3(n.positionY, n.positionX, 0), tiles[0].transform.rotation);
+                f= Instantiate(tiles[0], new Vector3(n.positionX, n.positionY, 0), tiles[0].transform.rotation);
                 break;
 
             case "voidTile":
-                f = Instantiate(tiles[1], new Vector3(n.positionY, n.positionX, 0), tiles[1].transform.rotation);
+                f = Instantiate(tiles[1], new Vector3(n.positionX, n.positionY, 0), tiles[1].transform.rotation);
                 break;
 
             case "groundTile":
-                f = Instantiate(tiles[2], new Vector3(n.positionY, n.positionX, 0), tiles[2].transform.rotation);
+                f = Instantiate(tiles[2], new Vector3(n.positionX, n.positionY, 0), tiles[2].transform.rotation);
                 break;
                 
             case "entranceTile":
-                f = Instantiate(tiles[3], new Vector3(n.positionY, n.positionX, 0), tiles[3].transform.rotation);
+                f = Instantiate(tiles[3], new Vector3(n.positionX, n.positionY, 0), tiles[3].transform.rotation);
                 break;
 
             case "exitTile":
-                f = Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
+                f = Instantiate(tiles[4], new Vector3(n.positionX, n.positionY, 0), tiles[4].transform.rotation);
                 break;
         }
 
@@ -51,28 +51,45 @@ public class TilePainter : MonoBehaviour
         while (arr.Count > 0)
         {
             NewNode n = arr.Dequeue();
+            Debug.Log(n.label);
+            if(n.label == "wallTile")
+            {
+                Instantiate(tiles[0], new Vector3(n.positionX, n.positionY, 0), tiles[0].transform.rotation);
+            } else if (n.label == "voidTile")
+            {
+                Instantiate(tiles[1], new Vector3(n.positionX, n.positionY, 0), tiles[1].transform.rotation);
+            } else if (n.label == "groundTile")
+            {
+                Instantiate(tiles[2], new Vector3(n.positionX, n.positionY, 0), tiles[2].transform.rotation);
+            } else if (n.label == "entranceTile") 
+            {
+                Instantiate(tiles[3], new Vector3(n.positionX, n.positionY, 0), tiles[3].transform.rotation);
+            } else if (n.label == "exitTile")
+            {
+                Instantiate(tiles[4], new Vector3(n.positionX, n.positionY, 0), tiles[4].transform.rotation);
+            }/*
             switch (n.label)
             {
                 case "wallTile":
-                    Instantiate(tiles[0], new Vector3(n.positionY, n.positionX, 0), tiles[0].transform.rotation);
+                    Instantiate(tiles[0], new Vector3(n.positionX, n.positionY, 0), tiles[0].transform.rotation);
                     break;
 
                 case "voidTile":
-                    Instantiate(tiles[1], new Vector3(n.positionY, n.positionX, 0), tiles[1].transform.rotation);
+                    Instantiate(tiles[1], new Vector3(n.positionX, n.positionY, 0), tiles[1].transform.rotation);
                     break;
 
                 case "groundTile":
-                    Instantiate(tiles[2], new Vector3(n.positionY, n.positionX, 0), tiles[2].transform.rotation);
+                    Instantiate(tiles[2], new Vector3(n.positionX, n.positionY, 0), tiles[2].transform.rotation);
                     break;
 
                 case "entranceTile":
-                    Instantiate(tiles[3], new Vector3(n.positionY, n.positionX, 0), tiles[3].transform.rotation);
+                    Instantiate(tiles[3], new Vector3(n.positionX, n.positionY, 0), tiles[3].transform.rotation);
                     break;
 
                 case "exitTile":
-                    Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
+                    Instantiate(tiles[4], new Vector3(n.positionX, n.positionY, 0), tiles[4].transform.rotation);
                     break;
-            }
+            }*/
             yield return new WaitForSeconds(paintDelay);
         }
         /*for(int y  = 0; y < arr.GetLength(0); y++)
@@ -83,23 +100,23 @@ public class TilePainter : MonoBehaviour
                 switch (n.label)
                 {
                     case "wallTile":
-                        Instantiate(tiles[0], new Vector3(n.positionY, n.positionX, 0), tiles[0].transform.rotation);
+                        Instantiate(tiles[0], new Vector3(n.positionX, n.positionY, 0), tiles[0].transform.rotation);
                         break;
 
                     case "voidTile":
-                        Instantiate(tiles[1], new Vector3(n.positionY, n.positionX, 0), tiles[1].transform.rotation);
+                        Instantiate(tiles[1], new Vector3(n.positionX, n.positionY, 0), tiles[1].transform.rotation);
                         break;
 
                     case "groundTile":
-                        Instantiate(tiles[2], new Vector3(n.positionY, n.positionX, 0), tiles[2].transform.rotation);
+                        Instantiate(tiles[2], new Vector3(n.positionX, n.positionY, 0), tiles[2].transform.rotation);
                         break;
 
                     case "entranceTile":
-                        Instantiate(tiles[3], new Vector3(n.positionY, n.positionX, 0), tiles[3].transform.rotation);
+                        Instantiate(tiles[3], new Vector3(n.positionX, n.positionY, 0), tiles[3].transform.rotation);
                         break;
 
                     case "exitTile":
-                        Instantiate(tiles[4], new Vector3(n.positionY, n.positionX, 0), tiles[4].transform.rotation);
+                        Instantiate(tiles[4], new Vector3(n.positionX, n.positionY, 0), tiles[4].transform.rotation);
                         break;
                 }
                 yield return new WaitForSeconds(paintDelay);

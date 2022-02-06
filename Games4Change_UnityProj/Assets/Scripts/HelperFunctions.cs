@@ -78,7 +78,6 @@ public class HelperFunctions : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             // Casts the ray and get the first game object hit
             if (hit.collider != null) {
-                Debug.Log("Run");
                 GameObject item = hit.collider.gameObject;
                 Display(item);
             }

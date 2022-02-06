@@ -52,9 +52,10 @@ public class NewWFC : MonoBehaviour
 
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
             Collapse(coordToCollapse);
+            help.GetComponent<TilePainter>().spawnTiles(roomMatrix[coordToCollapse[0], coordToCollapse[1]]);
         }
 
-        this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
+        //this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
 
         help.dumpMatrix(roomMatrix);
         
@@ -212,7 +213,6 @@ public class NewWFC : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Lowest entropy: " + lowestEntropy);
         return coords;
     }
 
