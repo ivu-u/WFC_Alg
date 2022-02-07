@@ -649,6 +649,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18444e148f3c6414e8fbf7291448e75e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundTileWeight: 0.8
+  voidTileWeight: 0.2
+  wallTileWeight: 0.3
+  entranceTileWeight: 0.05
+  exitTileWeight: 0.05
 --- !u!114 &353455543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,6 +669,8 @@ MonoBehaviour:
   roomDimension: 25
   filledList: []
   canGo: 0
+  entranceGen: 0
+  exitGen: 0
 --- !u!114 &353455544
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ using System.Linq;
 public class NewWFC : MonoBehaviour
 {
     HelperFunctions help;
+    StateDetails masterList;
 
     public int roomDimension;
     //2d array of x,y to hold information for each tile until it is spawned
@@ -21,10 +22,15 @@ public class NewWFC : MonoBehaviour
     Queue<NewNode> genOrder = new Queue<NewNode>();
     public bool canGo = false;
 
+    //GENERATION RULES
+    public bool entranceGen = false;
+    public bool exitGen = false;
+
     // Start is called before the first frame update
     void Start()
     {
         help = this.GetComponent<HelperFunctions>();
+        masterList = GameObject.FindGameObjectWithTag("Dictionary").GetComponent<StateDetails>();
         roomMatrix = new NewNode[roomDimension, roomDimension];
         totalTiles = roomDimension * roomDimension;
         Generate();
@@ -250,10 +256,34 @@ public class NewWFC : MonoBehaviour
         int x = coordinateToCollapse[1];
         //get possiblities of coordinate
         CrossOff(y, x);
-        //randomly pick 1
-        string choice;
-        int randNum = Random.Range(0, roomMatrix[y,x].possibilities.Count);
-        choice = roomMatrix[y,x].possibilities.ElementAt(randNum);
+        
+        //force remove entrance/exit
+        if(entranceGen == true) {
+            roomMatrix[y,x].possibilities.Remove("entranceTile");
+        }
+        if(exitGen == true) {
+            roomMatrix[y,x].possibilities.Remove("exitTile");
+        }
+
+        //check gen adjacency rules
+        //if ground not around don't gen ground or door
+        //if edge of map make sure only a void or wall spawns
+
+        //randomly pick 1 (weight handling)
+        float totRandom = 0f;
+        string choice = "";
+        foreach(string s in roomMatrix[y,x].possibilities) {
+            totRandom += masterList.masterWeights[s];
+        }
+        float rnd = Random.Range(0, totRandom);
+        for(int i = 0; i < roomMatrix[y, x].possibilities.Count(); i++) {
+            if(rnd < masterList.masterWeights[roomMatrix[y,x].possibilities.ElementAt(i)]) {
+                choice = roomMatrix[y,x].possibilities.ElementAt(i);
+                break;
+            } else {
+                rnd -= masterList.masterWeights[roomMatrix[y,x].possibilities.ElementAt(i)];
+            }
+        }
 
         //cross out all but that possiblity
         roomMatrix[y,x].possibilities = new HashSet<string>();

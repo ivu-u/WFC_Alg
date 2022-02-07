@@ -6,8 +6,25 @@ public class StateDetails : MonoBehaviour
 {
     //list of all the states we want to hold
     public Dictionary<string, NewTileTemplate> masterTypes = new Dictionary<string, NewTileTemplate>();
+    public Dictionary<string, float> masterWeights = new Dictionary<string, float>();
+
+    //GENERATION RULE VARIABLES
+    bool entranceGen = false;
+    bool exitGen = false;
+    public float groundTileWeight;
+    public float voidTileWeight;
+    public float wallTileWeight;
+    public float entranceTileWeight;
+    public float exitTileWeight;
 
     private void Start() {
+        //string to weight
+        masterWeights.Add("groundTile", groundTileWeight);
+        masterWeights.Add("voidTile", voidTileWeight);
+        masterWeights.Add("wallTile", wallTileWeight);
+        masterWeights.Add("entranceTile", entranceTileWeight);
+        masterWeights.Add("exitTile", exitTileWeight);
+
         //ground tile
         string[] allGround = { "groundTile", "wallTile", "exitTile", "entranceTile" }; ////initialize hashset with an array
         NewTileTemplate groundTile = new NewTileTemplate
