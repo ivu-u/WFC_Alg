@@ -1,6 +1,7 @@
 //CURRENT ISSUES
 //ENTRANCE AND EXIT ARE NOT GUARANTEED TO SPAWN
 //EXIT AND ENTRANCE MAY BE LOCKED OFF FROM EACH OTHER
+//DOOR CAN SPAWN SURROUNDED BY WALLS
 
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ public class NewWFC : MonoBehaviour
         InitializeSuperPositions();
 
         //Place any states manually in the nodes before wave function generation starts (collapse to 1)
-        ForcePlace(); //constrain to (single) vs constrain from (remove 1)
+        //ForcePlace(0, 0, "voidTile"); //constrain to (single) vs constrain from (remove 1)
 
         while (generated < totalTiles)
         {
@@ -83,14 +84,14 @@ public class NewWFC : MonoBehaviour
         }
     }
 
-    void ForcePlace ()
+    void ForcePlace (int y, int x, string tile)
     {
         //essentially collapse a specific state to a specific node in specific place
-        string[] initial = { "voidTile" };
-        roomMatrix[0, 0].possibilities = new HashSet<string>(initial);
-        roomMatrix[0, 0].updateAdjacency();
-        roomMatrix[0, 0].isCollapsed = true;
-        roomMatrix[0, 0].label = "voidTile";
+        string[] initial = { tile };
+        roomMatrix[y, x].possibilities = new HashSet<string>(initial);
+        roomMatrix[y, x].updateAdjacency();
+        roomMatrix[y, x].isCollapsed = true;
+        roomMatrix[y, x].label = tile;
         dirty.Push(roomMatrix[1, 0]);
         dirty.Push(roomMatrix[0, 1]);
         genOrder.Enqueue(roomMatrix[0, 0]);
