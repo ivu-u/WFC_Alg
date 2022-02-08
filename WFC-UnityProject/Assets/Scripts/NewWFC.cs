@@ -1,3 +1,7 @@
+//CURRENT ISSUES
+//ENTRANCE AND EXIT ARE NOT GUARANTEED TO SPAWN
+//EXIT AND ENTRANCE MAY BE LOCKED OFF FROM EACH OTHER
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -268,6 +272,17 @@ public class NewWFC : MonoBehaviour
         //check gen adjacency rules
         //if ground not around don't gen ground or door
         //if edge of map make sure only a void or wall spawns
+        if (y == 0 || y == roomDimension - 1 || x == 0 || x == roomDimension - 1)
+        {
+            string[] edgeRules = {"voidTile", "wallTile", "exitTile", "entranceTile"};
+            HashSet<string> edgeTiles = new HashSet<string>(edgeRules);
+            roomMatrix[y, x].possibilities.IntersectWith(edgeTiles);
+        } else
+        {
+            string[] edgeRules = { "voidTile", "wallTile", "groundTile" };
+            HashSet<string> edgeTiles = new HashSet<string>(edgeRules);
+            roomMatrix[y, x].possibilities.IntersectWith(edgeTiles);
+        }
 
         //randomly pick 1 (weight handling)
         float totRandom = 0f;
@@ -283,6 +298,15 @@ public class NewWFC : MonoBehaviour
             } else {
                 rnd -= masterList.masterWeights[roomMatrix[y,x].possibilities.ElementAt(i)];
             }
+        }
+
+        if(choice == "entranceTile")
+        {
+            entranceGen = true;
+        }
+        if(choice == "exitTile")
+        {
+            exitGen = true;
         }
 
         //cross out all but that possiblity
