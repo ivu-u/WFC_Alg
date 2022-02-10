@@ -240,20 +240,20 @@ public class NewWFC : MonoBehaviour
         }
         else   // choose a random tile
         {
-            int randNum = generateRandom(lowestEntropyCoords);
+            int randNum = RandomGenerators.generateRandEvenNum(lowestEntropyCoords);
             f[0] = lowestEntropyCoords[randNum];
             f[1] = lowestEntropyCoords[randNum + 1];
         }
         return f;
     }
-
-    public int generateRandom(List<int> lowestEntropyCoords)
+    /*
+    public int generateRandEvenNum(List<int> lowestEntropyCoords)
     {
         int randNum = Random.Range(0, lowestEntropyCoords.Count / 2);   // generate an even num
         randNum = randNum * 2;
 
         return randNum;
-    }
+    }*/
 
     void Collapse(int[] coordinateToCollapse)
     {
