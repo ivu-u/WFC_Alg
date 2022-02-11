@@ -11,7 +11,7 @@ public class SpawnItem : MonoBehaviour
     public GameObject managementWFC;
     private NewWFC newWFC;
 
-    private void Start()
+    private void Awake()
     {
         newWFC = managementWFC.GetComponent<NewWFC>();
     }
