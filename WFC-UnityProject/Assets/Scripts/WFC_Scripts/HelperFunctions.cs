@@ -18,6 +18,8 @@ public class HelperFunctions : MonoBehaviour
     public TextMeshProUGUI allowedUpText;
     public TextMeshProUGUI allowedDownText;
 
+    public bool debugMode = false;
+
     //not collapsed - -1
     //wall - 0
     //void - 1
@@ -69,9 +71,14 @@ public class HelperFunctions : MonoBehaviour
         Debug.Log(sb.ToString());
     }
 
+    public void ToggleDebug()
+    {
+        debugMode = !debugMode;
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && debugMode == true)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);

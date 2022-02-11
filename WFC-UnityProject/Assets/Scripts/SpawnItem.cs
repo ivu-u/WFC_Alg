@@ -16,13 +16,13 @@ public class SpawnItem : MonoBehaviour
         newWFC = managementWFC.GetComponent<NewWFC>();
     }
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown("space"))
         {
             spawnTest();
         }
-    }
+    }*/
 
     public void spawnTest()
     {

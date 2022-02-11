@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -25,5 +26,10 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * runSpeed, vertical * runSpeed);
+    }
+
+    public void Die()
+    {
+        SceneManager.LoadScene(1);
     }
 }

@@ -26,6 +26,11 @@ public class SimpleEnemy : MonoBehaviour
             dirX *= -1f;
             dirY *= -1f;
         }
+
+        if(collision.tag == "Player")
+        {
+            collision.GetComponent<PlayerMovement>().Die();
+        }
     }
 
     void FixedUpdate()

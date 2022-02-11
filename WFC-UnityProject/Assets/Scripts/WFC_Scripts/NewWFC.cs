@@ -69,7 +69,9 @@ public class NewWFC : MonoBehaviour
         //this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
 
         help.dumpMatrix(roomMatrix);
-        
+
+        //spawn player and other items
+        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<SpawnItem>().spawnTest();
     }
 
     void InitializeSuperPositions ()
