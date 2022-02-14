@@ -7,6 +7,7 @@ public class SimpleEnemy3 : MonoBehaviour
     public float moveSpeed;
     private Vector3 localScale;
     private Rigidbody2D rb;
+    public float backJump;
 
     void Start()
     {
@@ -18,10 +19,26 @@ public class SimpleEnemy3 : MonoBehaviour
     {
         if (collision.gameObject.tag == "wallTile")
         {
+            // Get current directioh
+            Vector3 backVel = transform.up * -1;
+            backVel = new Vector3(backVel.x / backJump, backVel.y / backJump, backVel.z / backJump);
+            transform.position = transform.position + backVel;
             rb.velocity = new Vector2(0, 0);
-            Quaternion rotAmount = Quaternion.Euler(0, 0, 90);
+
+            //this.transform.position = new Vector2(this.transform.position.x, this.transform.position.y);
+            int dir = Random.Range(0, 2);
+            Quaternion rotAmount;
+            if (dir == 1)
+            {
+                //turn right
+                rotAmount = Quaternion.Euler(0, 0, 90);
+            } else
+            {
+                //turn left
+                rotAmount = Quaternion.Euler(0, 0, -90);
+            }
+            
             transform.rotation = transform.rotation * rotAmount;
-            Debug.Log("wallHit");
         }
 
         if (collision.gameObject.tag == "Player")
@@ -32,6 +49,7 @@ public class SimpleEnemy3 : MonoBehaviour
 
     private void Update()
     {
-        rb.AddForce(transform.up * moveSpeed * Time.deltaTime);
+        Vector3 forVel = transform.up;
+        rb.velocity = new Vector3(forVel.x * moveSpeed, forVel.y * moveSpeed, forVel.z * moveSpeed);
     }
 }
