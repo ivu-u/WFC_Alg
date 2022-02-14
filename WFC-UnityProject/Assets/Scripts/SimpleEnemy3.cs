@@ -14,16 +14,16 @@ public class SimpleEnemy3 : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "wallTile")
         {
             transform.Rotate(0, 0, 90);
         }
 
-        if (collision.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            collision.GetComponent<PlayerMovement>().Die();
+            collision.gameObject.GetComponent<PlayerMovement>().Die();
         }
     }
 
