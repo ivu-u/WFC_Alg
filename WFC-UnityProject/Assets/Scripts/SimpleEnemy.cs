@@ -38,14 +38,15 @@ public class SimpleEnemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        /*if (isX)
+        Debug.Log("called here");
+        if (isX)
         {
             rb.velocity = new Vector2(dirX * moveSpeed, moveSpeed);
         }
         else if (isY)
         {
             rb.velocity = new Vector2(moveSpeed, dirY * moveSpeed);
-        }*/
+        }
     }
 
     void LateUpdate()
@@ -70,8 +71,6 @@ public class SimpleEnemy : MonoBehaviour
 
             if (((facingRight) && (localScale.x < 0)) || ((!facingRight) && (localScale.x > 0)))
                 localScale.x *= -1;
-
-            rb.velocity = new Vector2(dirX * moveSpeed, 0 * moveSpeed);
         }
         else if (randNum == 2)
         {
@@ -86,8 +85,6 @@ public class SimpleEnemy : MonoBehaviour
 
             if (((facingUp) && (localScale.y < 0)) || ((!facingUp) && (localScale.y > 0)))
                 localScale.y *= -1;
-
-            rb.velocity = new Vector2(0 * moveSpeed, dirY * moveSpeed);
         }
         transform.localScale = localScale;
     }
