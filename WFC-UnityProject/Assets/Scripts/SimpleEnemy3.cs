@@ -18,7 +18,9 @@ public class SimpleEnemy3 : MonoBehaviour
     {
         if (collision.gameObject.tag == "wallTile")
         {
-            transform.rotation = Quaternion.Euler(0f, 0f, transform.rotation.z+90f);
+            rb.velocity = new Vector2(0, 0);
+            Quaternion rotAmount = Quaternion.Euler(0, 0, 90);
+            transform.rotation = transform.rotation * rotAmount;
             Debug.Log("wallHit");
         }
 
