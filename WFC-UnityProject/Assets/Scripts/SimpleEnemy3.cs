@@ -18,7 +18,8 @@ public class SimpleEnemy3 : MonoBehaviour
     {
         if (collision.gameObject.tag == "wallTile")
         {
-            transform.Rotate(0, 0, 90);
+            transform.rotation = Quaternion.Euler(0f, 0f, transform.rotation.z+90f);
+            Debug.Log("wallHit");
         }
 
         if (collision.gameObject.tag == "Player")
@@ -29,6 +30,6 @@ public class SimpleEnemy3 : MonoBehaviour
 
     private void Update()
     {
-        transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+        rb.AddForce(transform.up * moveSpeed * Time.deltaTime);
     }
 }
