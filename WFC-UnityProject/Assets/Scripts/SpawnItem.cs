@@ -38,12 +38,23 @@ public class SpawnItem : MonoBehaviour
 
         foreach (GameObject g in arr)
         {
-            int rand = RandomGenerators.generateRandNum(emptyGroundTiles);
+            if (g.tag == "Player")  // spawn player at enterance
+            {
+                NewNode entranceTile = findEntrance(roomMatrix);
 
-            // place the game object at the random location
-            Instantiate(g, new Vector3(emptyGroundTiles[rand].positionX, emptyGroundTiles[rand].positionY, 0), Quaternion.identity);
+                Instantiate(g, new Vector3(entranceTile.positionX, entranceTile.positionY, 0), Quaternion.identity);
+            }
+            else //spawn other game obejcts randomly
+            {
+                int rand = RandomGenerators.generateRandNum(emptyGroundTiles);
 
-            emptyGroundTiles.RemoveAt(rand);
+                // place the game object at the random location
+                Instantiate(g, new Vector3(emptyGroundTiles[rand].positionX, emptyGroundTiles[rand].positionY, 0), Quaternion.identity);
+
+                emptyGroundTiles.RemoveAt(rand);
+            }
+
+            
         }
     }
 
@@ -64,5 +75,24 @@ public class SpawnItem : MonoBehaviour
         }
 
         return emptyGroundTiles;
+    }
+
+    public NewNode findEntrance(NewNode[,] roomMatrix)
+    {
+        NewNode entranceTile = new NewNode(0,0);    // create an empty NewNode to hold data
+
+        for (int y = 0; y < roomMatrix.GetLength(0); y++)
+        {
+            for (int x = 0; x < roomMatrix.GetLength(1); x++)
+            {
+                if (roomMatrix[y, x].label == "entranceTile")
+                {
+                    entranceTile = roomMatrix[y, x];
+                    Debug.Log("found entrance");
+                }
+            }
+        }
+
+        return entranceTile;
     }
 }
