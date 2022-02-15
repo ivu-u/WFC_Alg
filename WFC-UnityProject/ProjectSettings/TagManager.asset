@@ -7,6 +7,8 @@ TagManager:
   - Dictionary
   - wallTile
   - EventSystem
+  - Exit
+  - Fade
   layers:
   - Default
   - TransparentFX

@@ -30,6 +30,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
-        SceneManager.LoadScene(1);
+        GameObject.FindGameObjectWithTag("Fade").GetComponent<SceneFader>().FadeTo(2);
     }
 }

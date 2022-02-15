@@ -12,12 +12,16 @@ public class CoinManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        text.text = "Coins: 0";
+        text.text = "Coins: 0/3";
     }
 
     public void Add()
     {
         coins++;
-        text.text = "Coins: " + coins;
+        text.text = "Coins: " + coins + "/3";
+        if(coins == 3)
+        {
+            GameObject.FindGameObjectWithTag("Exit").GetComponent<GameExit>().Unlock();
+        }
     }
 }

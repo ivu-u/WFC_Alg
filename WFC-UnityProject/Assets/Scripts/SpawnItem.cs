@@ -26,7 +26,7 @@ public class SpawnItem : MonoBehaviour
 
     public void spawnTest()
     {
-        GameObject[] go = {player, coin, coin, enemy};
+        GameObject[] go = {player, coin, coin, coin, enemy};
 
         placeItems(newWFC.roomMatrix, go);
     }
