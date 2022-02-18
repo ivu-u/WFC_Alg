@@ -842,6 +842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49add3b66314a4a758f8b9e9e705b306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorDist: 500
   roomDimension: 25
   filledList: []
   canGo: 0
