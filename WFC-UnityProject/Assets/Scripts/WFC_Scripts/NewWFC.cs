@@ -10,6 +10,7 @@ using System.Linq;
 
 public class NewWFC : MonoBehaviour
 {
+    public int doorDist;
     HelperFunctions help;
     StateDetails masterList;
 
@@ -39,7 +40,186 @@ public class NewWFC : MonoBehaviour
         roomMatrix = new NewNode[roomDimension, roomDimension];
         totalTiles = roomDimension * roomDimension;
         Generate();
-        //Debug.Log(roomMatrix.Length);
+        Debug.Log("done initial generation");
+        GenerateDoors();
+        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<SpawnItem>().spawnTest();
+    }
+
+    void Paint ()
+    {
+        Debug.Log("paint tile");
+        for(int y = 0; y < roomDimension; y++)
+        {
+            for(int x = 0; x < roomDimension; x++)
+            {
+                help.GetComponent<TilePainter>().spawnTiles(roomMatrix[y, x]);
+            }
+        }
+        
+    }
+
+    void GenerateDoors ()
+    {
+        Debug.Log("gen doors");
+        //pick potential entrance door spot
+        int xLoc = -1;
+        int yLoc = -1;
+        int side = Random.Range(0, 4);
+        if(side == 0)
+        {
+            //left side
+            xLoc = 0;
+            while(yLoc == -1 || roomMatrix[yLoc,xLoc+1].label != "groundTile")
+            {
+                yLoc = Random.Range(0, roomDimension);
+            }
+        } else if(side == 1)
+        {
+            //up
+            yLoc = roomDimension - 1;
+            while (xLoc == -1 || roomMatrix[yLoc-1, xLoc].label != "groundTile")
+            {
+                xLoc = Random.Range(0, roomDimension);
+            }
+        }
+        else if (side == 2)
+        {
+            //right
+            xLoc = roomDimension - 1;
+            while (yLoc == -1 || roomMatrix[yLoc, xLoc - 1].label != "groundTile")
+            {
+                yLoc = Random.Range(0, roomDimension);
+            }
+        }
+        else if (side == 3)
+        {
+            //down
+            yLoc = 0;
+            while (xLoc == -1 || roomMatrix[yLoc + 1, xLoc].label != "groundTile")
+            {
+                xLoc = Random.Range(0, roomDimension);
+            }
+        }
+
+        //xLoc and yLoc is the entrance spot
+        
+        bool wallFound = false;
+        int changeX = 0;
+        int changeY = 0;
+        int checkCount = 0;
+
+        while(wallFound == false)
+        {
+            int dirToMove = Random.Range(0, 4);
+            if(dirToMove == 0)
+            {
+                //left
+                changeX--;
+                if (xLoc + changeX >= 0) {
+                    if (roomMatrix[yLoc + changeY, xLoc + changeX].label == "wallTile" && CheckSide(yLoc + changeY, xLoc + changeX))
+                    {
+                        if (checkCount > doorDist)
+                        {
+                            //place exit
+                            wallFound = true;
+                            ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+                        }
+                    } else if (roomMatrix[yLoc + changeY, xLoc + changeX].label != "groundTile")
+                    {
+                        //move back
+                        changeX++;
+                    }
+                } else
+                {
+                    changeX++;
+                }
+            } else if (dirToMove == 1)
+            {
+                //up
+                changeY++;
+                if (yLoc + changeY < roomDimension)
+                {
+                    if (roomMatrix[yLoc + changeY, xLoc + changeX].label == "wallTile" && CheckSide(yLoc + changeY, xLoc + changeX))
+                    {
+                        if (checkCount > doorDist)
+                        {
+                            //place exit
+                            wallFound = true;
+                            ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+                        }
+                    }
+                    else if (roomMatrix[yLoc + changeY, xLoc + changeX].label != "groundTile")
+                    {
+                        //move back
+                        changeY--;
+                    }
+                } else
+                {
+                    changeY--;
+                }
+            } else if (dirToMove == 2)
+            {
+                //right
+                changeX++;
+                if (xLoc + changeX < roomDimension)
+                {
+                    if (roomMatrix[yLoc + changeY, xLoc + changeX].label == "wallTile" && CheckSide(yLoc + changeY, xLoc + changeX))
+                    {
+                        if (checkCount > doorDist)
+                        {
+                            //place exit
+                            wallFound = true;
+                            ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+                        }
+                    }
+                    else if (roomMatrix[yLoc + changeY, xLoc + changeX].label != "groundTile")
+                    {
+                        //move back
+                        changeX--;
+                    }
+                } else
+                {
+                    changeX--;
+                }
+            } else
+            {
+                //down
+                changeY--;
+                if (yLoc + changeY >= 0)
+                {
+                    if (roomMatrix[yLoc + changeY, xLoc + changeX].label == "wallTile" && CheckSide(yLoc + changeY, xLoc + changeX))
+                    {
+                        if (checkCount > doorDist)
+                        {
+                            //place exit
+                            wallFound = true;
+                            ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+                        }
+                    }
+                    else if (roomMatrix[yLoc + changeY, xLoc + changeX].label != "groundTile")
+                    {
+                        //move back
+                        changeY++;
+                    }
+                } else
+                {
+                    changeY++;
+                }
+            }
+            checkCount++;
+        }
+        ForcePlace(yLoc, xLoc, "entranceTile");
+        ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+        Paint();
+    }
+
+    bool CheckSide (int y, int x)
+    {
+        if(y == roomDimension - 1 || y == 0 || x == 0 || x == roomDimension - 1)
+        {
+            return true;
+        }
+        return false;
     }
 
     void Generate ()
@@ -63,7 +243,7 @@ public class NewWFC : MonoBehaviour
 
             //Collapse - collapse the array position (x,y) from the previous function by randomly picking an available tile and add neighbors of the (x,y) to the queue
             Collapse(coordToCollapse);
-            help.GetComponent<TilePainter>().spawnTiles(roomMatrix[coordToCollapse[0], coordToCollapse[1]]);
+            
         }
 
         //this.gameObject.GetComponent<TilePainter>().makeTiles(genOrder);
@@ -71,7 +251,7 @@ public class NewWFC : MonoBehaviour
         help.dumpMatrix(roomMatrix);
 
         //spawn player and other items
-        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<SpawnItem>().spawnTest();
+        
     }
 
     void InitializeSuperPositions ()
@@ -265,10 +445,10 @@ public class NewWFC : MonoBehaviour
         CrossOff(y, x);
         
         //force remove entrance/exit
-        if(entranceGen == true) {
+        if(entranceGen == false) {
             roomMatrix[y,x].possibilities.Remove("entranceTile");
         }
-        if(exitGen == true) {
+        if(exitGen == false) {
             roomMatrix[y,x].possibilities.Remove("exitTile");
         }
 
