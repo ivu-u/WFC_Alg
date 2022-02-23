@@ -41,7 +41,7 @@ public class HelperFunctions : MonoBehaviour
                 }
                 else
                 {
-                    switch(matrix[i,j].possibilities.First())
+                    switch(matrix[i,j].label)
                     {
                         case "wallTile":
                             sb.Append(0);

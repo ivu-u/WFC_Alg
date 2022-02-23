@@ -32,6 +32,9 @@ public class NewWFC : MonoBehaviour
     public bool entranceGen = false;
     public bool exitGen = false;
 
+    // room cleanup
+    private RoomCleanup rc;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,10 +42,20 @@ public class NewWFC : MonoBehaviour
         masterList = GameObject.FindGameObjectWithTag("Dictionary").GetComponent<StateDetails>();
         roomMatrix = new NewNode[roomDimension, roomDimension];
         totalTiles = roomDimension * roomDimension;
+
         Generate();
         Debug.Log("done initial generation");
+
         GenerateDoors();
         GameObject.FindGameObjectWithTag("EventSystem").GetComponent<SpawnItem>().spawnTest();
+
+        rc = GameObject.FindGameObjectWithTag("Dictionary").GetComponent<RoomCleanup>();
+
+        help.dumpMatrix(roomMatrix);
+        rc.roomCleanUp();
+        help.dumpMatrix(roomMatrix);
+
+        Paint();
     }
 
     void Paint ()
@@ -210,7 +223,6 @@ public class NewWFC : MonoBehaviour
         }
         ForcePlace(yLoc, xLoc, "entranceTile");
         ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
-        Paint();
     }
 
     bool CheckSide (int y, int x)
@@ -554,5 +566,11 @@ public class NewWFC : MonoBehaviour
 
         //paint
         //this.gameObject.GetComponent<TilePainter>().spawnTiles(roomMatrix[y,x]);
+    }
+
+    public void changeMatrix(NewNode n)
+    {
+        Debug.Log("changed matrix");
+        roomMatrix[n.positionY, n.positionX].label = "groundTile";
     }
 }
