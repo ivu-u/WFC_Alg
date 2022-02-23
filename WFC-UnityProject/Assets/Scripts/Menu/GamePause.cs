@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GamePause : MonoBehaviour
 {
@@ -9,11 +11,12 @@ public class GamePause : MonoBehaviour
     public GameObject optionsPanel;
     public SceneFader sf;
     public GameObject resume;
+    EventSystem es;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        es = this.GetComponent<EventSystem>();
     }
 
     // Update is called once per frame
@@ -30,6 +33,7 @@ public class GamePause : MonoBehaviour
         optionsOpened = true;
         Time.timeScale = 0;
         optionsPanel.SetActive(true);
+        StartCoroutine(SelectContinueButtonLater());
     }
 
     public void CloseOptions ()
@@ -49,5 +53,12 @@ public class GamePause : MonoBehaviour
     {
         Time.timeScale = 1;
         sf.FadeTo(4);
+    }
+
+    IEnumerator SelectContinueButtonLater()
+    {
+        yield return null;
+        es.SetSelectedGameObject(null);
+        es.SetSelectedGameObject(resume.gameObject);
     }
 }

@@ -4617,7 +4617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionsPanel: {fileID: 1412735056}
   sf: {fileID: 203993599}
-  resume: {fileID: 0}
+  resume: {fileID: 398675633}
 --- !u!1 &1914582281
 GameObject:
   m_ObjectHideFlags: 0
