@@ -1070,6 +1070,7 @@ GameObject:
   - component: {fileID: 353455542}
   - component: {fileID: 353455544}
   - component: {fileID: 353455545}
+  - component: {fileID: 353455546}
   m_Layer: 0
   m_Name: ManagementWFC
   m_TagString: Dictionary
@@ -1166,6 +1167,19 @@ MonoBehaviour:
   allowedUpText: {fileID: 1784261892}
   allowedDownText: {fileID: 761417382}
   debugMode: 0
+--- !u!114 &353455546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353455540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4feb1460623cad42bfe2d120c88cd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  managementWFC: {fileID: 353455540}
 --- !u!1 &370138388
 GameObject:
   m_ObjectHideFlags: 0
