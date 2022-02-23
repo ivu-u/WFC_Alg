@@ -1122,6 +1122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorDist: 750
+  minDoorDist: 10
   roomDimension: 40
   filledList: []
   canGo: 0

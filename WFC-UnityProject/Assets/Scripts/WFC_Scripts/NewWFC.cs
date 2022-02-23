@@ -7,10 +7,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class NewWFC : MonoBehaviour
 {
     public int doorDist;
+    public float minDoorDist;
     HelperFunctions help;
     StateDetails masterList;
 
@@ -223,6 +225,11 @@ public class NewWFC : MonoBehaviour
         }
         ForcePlace(yLoc, xLoc, "entranceTile");
         ForcePlace(yLoc + changeY, xLoc + changeX, "exitTile");
+
+        if(Mathf.Sqrt(changeY*changeY + changeX*changeX) < minDoorDist)
+        {
+            SceneManager.LoadScene(4);
+        }
     }
 
     bool CheckSide (int y, int x)

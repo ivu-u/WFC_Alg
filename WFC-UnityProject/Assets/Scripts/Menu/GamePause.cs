@@ -41,11 +41,13 @@ public class GamePause : MonoBehaviour
 
     public void GetMenu ()
     {
+        Time.timeScale = 1;
         sf.FadeTo(0);
     }
 
     public void ReloadLevel ()
     {
+        Time.timeScale = 1;
         sf.FadeTo(4);
     }
 }
