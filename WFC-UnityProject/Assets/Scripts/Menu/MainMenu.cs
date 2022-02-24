@@ -8,6 +8,10 @@ using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        PlayerPrefs.SetInt("currentLevel", 0);
+    }
     public SceneFader sceneFader;
 
     public void PlayGame()

@@ -9,6 +9,7 @@ TagManager:
   - EventSystem
   - Exit
   - Fade
+  - enemy
   layers:
   - Default
   - TransparentFX

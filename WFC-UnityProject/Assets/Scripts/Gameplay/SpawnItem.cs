@@ -6,7 +6,9 @@ public class SpawnItem : MonoBehaviour
 {
     public GameObject managementWFC;
     private NewWFC newWFC;
-    public GameObject[] go;
+    public GameObject player;
+    public GameObject enemy;
+    public GameObject coin;
 
     private void Awake()
     {
@@ -23,11 +25,27 @@ public class SpawnItem : MonoBehaviour
 
     public void spawnTest()
     {
+        Debug.Log("Current level: " + PlayerPrefs.GetInt("currentLevel"));
+        List<GameObject> go = new List<GameObject>();
+        go.Add(player);
+
+        int coins = PlayerPrefs.GetInt("currentLevel") + 5;
+        int enemies = PlayerPrefs.GetInt("currentLevel") + 5;
+
+        for(int i = 0; i < coins; i++)
+        {
+            go.Add(coin);
+        }
+        for (int i = 0; i < enemies; i++)
+        {
+            go.Add(enemy);
+        }
+
         placeItems(newWFC.roomMatrix, go);
     }
 
     // place random objects from an array on empty ground tiles 
-    public void placeItems(NewNode[,] roomMatrix, GameObject[] arr)
+    public void placeItems(NewNode[,] roomMatrix, List<GameObject> arr)
     {
         List<NewNode> emptyGroundTiles = findEmptyGround(roomMatrix);
 

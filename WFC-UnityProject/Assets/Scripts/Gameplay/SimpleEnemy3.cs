@@ -17,7 +17,7 @@ public class SimpleEnemy3 : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "wallTile")
+        if (collision.gameObject.tag == "wallTile" || collision.gameObject.tag == "enemy")
         {
             // Get current directioh
             Vector3 backVel = transform.up * -1;
