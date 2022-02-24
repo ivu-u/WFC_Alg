@@ -22,7 +22,7 @@ public class GamePause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && optionsOpened == false)
+        if((Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2)) && optionsOpened == false)
         {
             OpenOptions();
         }

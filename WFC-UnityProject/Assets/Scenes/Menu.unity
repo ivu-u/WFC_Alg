@@ -1096,7 +1096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 650f005ded51240b9b5f8ffd6efe4719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tm: {fileID: 0}
+  tm: {fileID: 1308897993}
   sceneFader: {fileID: 1662090156}
 --- !u!114 &1864728758
 MonoBehaviour:
