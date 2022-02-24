@@ -23,6 +23,11 @@ public class MainMenu : MonoBehaviour
         sceneFader.FadeTo(5);
     }
 
+    public void Retry ()
+    {
+        sceneFader.FadeTo(1);
+    }
+
     public void Quit()
     {
         Application.Quit();
