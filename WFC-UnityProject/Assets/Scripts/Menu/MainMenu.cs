@@ -9,7 +9,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public TextMeshPro tm;
+    public TextMeshProUGUI tm;
 
     private void Start()
     {
