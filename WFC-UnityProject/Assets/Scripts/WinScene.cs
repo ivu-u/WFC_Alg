@@ -9,12 +9,13 @@ public class WinScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("current level before future: " + PlayerPrefs.GetInt("currentLevel"));
         int level = PlayerPrefs.GetInt("currentLevel");
         int future = level + 1;
-        Debug.Log("future level:" + future);
         PlayerPrefs.SetInt("currentLevel", future);
-        Debug.Log("level after future was set: " + PlayerPrefs.GetInt("currentLevel"));
+        if(PlayerPrefs.GetInt("highestReached") < future)
+        {
+            PlayerPrefs.SetInt("highestReached", future);
+        }
         SceneManager.LoadScene(1);
     }
 

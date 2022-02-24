@@ -5,12 +5,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
+    public TextMeshPro tm;
+
     private void Start()
     {
         PlayerPrefs.SetInt("currentLevel", 0);
+        tm.text = "High score: " + PlayerPrefs.GetInt("highestReached");
     }
     public SceneFader sceneFader;
 
