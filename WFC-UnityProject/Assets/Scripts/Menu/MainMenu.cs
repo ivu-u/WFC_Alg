@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        sceneFader.FadeTo(1);
+        sceneFader.FadeTo(5);
     }
 
     public void Quit()

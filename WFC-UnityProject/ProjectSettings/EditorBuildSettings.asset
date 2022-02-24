@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GenRetry.unity
     guid: 930508a73a73e49598564c35843783cc
+  - enabled: 1
+    path: Assets/Scenes/Instructions.unity
+    guid: 93da1bc86422d49b49d87e517deb3b7c
   m_configObjects: {}
