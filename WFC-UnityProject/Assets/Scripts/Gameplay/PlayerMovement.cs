@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator Death()
     {
         //sprite
-
+        this.GetComponent<Animator>().SetBool("dead", true);
 
         //freeze movement
         runSpeed = 0;
