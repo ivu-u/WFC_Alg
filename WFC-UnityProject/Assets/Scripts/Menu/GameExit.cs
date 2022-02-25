@@ -13,7 +13,49 @@ public class GameExit : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            GameObject.FindGameObjectWithTag("Fade").GetComponent<SceneFader>().FadeTo(3);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            float timeElapsed = 0;
+            while(timeElapsed < 1f)
+            {
+                //move position
+                Vector3.Lerp(player.transform.position, this.transform.position, timeElapsed/1f);
+                timeElapsed += Time.deltaTime;
+            }
+            
+            StartCoroutine(Exit());
         }
+    }
+
+    public IEnumerator Exit()
+    {
+        //freeze movement
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMovement>().runSpeed = 0;
+
+        //freeze enemies
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<SimpleEnemy3>().moveSpeed = 0;
+        }
+
+        //lerp movement
+        Vector3 valueToLerp;
+        float timeElapsed = 0;
+        while (timeElapsed < 1)
+        {
+            valueToLerp = Vector3.Lerp(player.transform.position, this.transform.position, timeElapsed / 1);
+            player.transform.position = valueToLerp;
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        player.transform.position = this.transform.position;
+
+        //play sounds
+
+
+        //scene
+        yield return new WaitForSeconds(5);
+        GameObject.FindGameObjectWithTag("Fade").GetComponent<SceneFader>().FadeTo(3);
     }
 }

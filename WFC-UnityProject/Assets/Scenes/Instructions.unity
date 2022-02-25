@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: avoid enemies
+  m_text: avoid viruses
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7f1e66ddc308644aab3dc84022eeefe2, type: 2}
   m_sharedMaterial: {fileID: -5882981649975775201, guid: 7f1e66ddc308644aab3dc84022eeefe2, type: 2}

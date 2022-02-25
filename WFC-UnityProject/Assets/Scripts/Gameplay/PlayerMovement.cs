@@ -30,6 +30,29 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
+        StartCoroutine(Death());
+    }
+
+    public IEnumerator Death()
+    {
+        //sprite
+
+
+        //freeze movement
+        runSpeed = 0;
+
+        //freeze enemies
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<SimpleEnemy3>().moveSpeed = 0;
+        }
+
+        //play sounds
+
+
+        //scene
+        yield return new WaitForSeconds(5);
         GameObject.FindGameObjectWithTag("Fade").GetComponent<SceneFader>().FadeTo(2);
     }
 }
