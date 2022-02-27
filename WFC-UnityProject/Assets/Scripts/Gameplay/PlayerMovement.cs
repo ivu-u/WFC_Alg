@@ -19,8 +19,26 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        //get input
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+
+        //rotate sprite accordingly
+        if(vertical < 0)
+        {
+            this.GetComponent<SpriteRenderer>().flipY = false;
+        } else if (vertical > 0)
+        {
+            this.GetComponent<SpriteRenderer>().flipY = true;
+        }
+
+        if(horizontal > 0)
+        {
+            transform.localScale = new Vector3(.5f, .5f, 1f);
+        } else if(horizontal < 0)
+        {
+            transform.localScale = new Vector3(-.5f, .5f, 1f);
+        }
     }
 
     private void FixedUpdate()
@@ -49,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //play sounds
-
+        this.GetComponent<AudioManagement>().SplatSound();
 
         //scene
         yield return new WaitForSeconds(5);
