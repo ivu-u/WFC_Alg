@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewNode : MonoBehaviour
+public class NewNode
 {
     // what is allowed on each side of the node (since it is initially filled with all possibiilites all
     // all states are initially posible (they will get slowly crossed out as possibilities are removed

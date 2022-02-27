@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewTileTemplate : MonoBehaviour
+public class NewTileTemplate
 {
     //template tile
     public string label;

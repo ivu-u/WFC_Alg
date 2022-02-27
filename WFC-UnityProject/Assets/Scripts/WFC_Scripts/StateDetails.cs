@@ -9,8 +9,6 @@ public class StateDetails : MonoBehaviour
     public Dictionary<string, float> masterWeights = new Dictionary<string, float>();
 
     //GENERATION RULE VARIABLES
-    bool entranceGen = false;
-    bool exitGen = false;
     public float groundTileWeight;
     public float voidTileWeight;
     public float wallTileWeight;

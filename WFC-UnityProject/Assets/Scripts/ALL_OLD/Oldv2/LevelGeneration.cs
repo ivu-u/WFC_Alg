@@ -6,7 +6,7 @@ public class LevelGeneration : MonoBehaviour
 {
     // VARIABLES---------------------------------------
     public GameObject WFCRoom;
-    private int hallwayLength = 2;  // units of 16 x 16 tiles
+    //private int hallwayLength = 2;  // units of 16 x 16 tiles
 
     public Transform startingPoint;
 
