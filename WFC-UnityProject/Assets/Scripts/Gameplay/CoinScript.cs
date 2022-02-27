@@ -17,7 +17,7 @@ public class CoinScript : MonoBehaviour
     void CollectCoin ()
     {
         collectionManager.GetComponent<CoinManager>().Add();
-        GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManagement>().CoinSound();
+        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<AudioManagement>().CoinSound();
         Destroy(this.gameObject);
     }
 

@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //play sounds
-        this.GetComponent<AudioManagement>().SplatSound();
+        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<AudioManagement>().SplatSound();
 
         //scene
         yield return new WaitForSeconds(5);
