@@ -10,6 +10,7 @@ TagManager:
   - Exit
   - Fade
   - enemy
+  - Music
   layers:
   - Default
   - TransparentFX

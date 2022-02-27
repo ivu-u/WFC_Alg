@@ -38,7 +38,7 @@ public class AudioManagement : MonoBehaviour
 
     public IEnumerator splat ()
     {
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.05f);
         audioMaker.clip = audios[3];
         audioMaker.Play();
     }
