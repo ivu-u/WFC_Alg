@@ -14,9 +14,11 @@ public class AudioManagement : MonoBehaviour
 
     public void ChangeSelectionSound ()
     {
-        Debug.Log("selection sound should play");
-        audioMaker.clip = audios[0];
-        audioMaker.Play();
+        if (audioMaker != null)
+        {
+            audioMaker.clip = audios[0];
+            audioMaker.Play();
+        }
     }
 
     public void SelectSound()
