@@ -44,4 +44,10 @@ public class AudioManagement : MonoBehaviour
         audioMaker.clip = audios[3];
         audioMaker.Play();
     }
+
+    public void ExitSound()
+    {
+        audioMaker.clip = audios[4];
+        audioMaker.Play();
+    }
 }

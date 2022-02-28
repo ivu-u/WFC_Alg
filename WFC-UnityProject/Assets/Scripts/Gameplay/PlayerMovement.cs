@@ -23,19 +23,10 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
-        //rotate sprite accordingly
-        if(vertical < 0)
-        {
-            this.GetComponent<SpriteRenderer>().flipY = false;
-        } else if (vertical > 0)
-        {
-            this.GetComponent<SpriteRenderer>().flipY = true;
-        }
-
-        if(horizontal > 0)
+        if(horizontal > 0 && runSpeed > 0)
         {
             transform.localScale = new Vector3(.5f, .5f, 1f);
-        } else if(horizontal < 0)
+        } else if(horizontal < 0 && runSpeed > 0)
         {
             transform.localScale = new Vector3(-.5f, .5f, 1f);
         }

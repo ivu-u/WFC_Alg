@@ -39,23 +39,30 @@ public class GameExit : MonoBehaviour
             enemies[i].GetComponent<SimpleEnemy3>().moveSpeed = 0;
         }
 
+        //play sounds
+        GameObject.FindGameObjectWithTag("EventSystem").GetComponent<AudioManagement>().ExitSound();
+
         //lerp movement
         Vector3 valueToLerp;
+        float camToLerp;
         float timeElapsed = 0;
         while (timeElapsed < 1)
         {
+            //playerPos
             valueToLerp = Vector3.Lerp(player.transform.position, this.transform.position, timeElapsed / 1);
             player.transform.position = valueToLerp;
+
+            //camZoom
+            camToLerp = Mathf.Lerp(5f, 2.5f, timeElapsed / 1);
+            player.transform.GetChild(0).GetComponent<Camera>().orthographicSize = camToLerp;
+
             timeElapsed += Time.deltaTime;
             yield return null;
         }
         player.transform.position = this.transform.position;
 
-        //play sounds
-
-
         //scene
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1.5f);
         GameObject.FindGameObjectWithTag("Fade").GetComponent<SceneFader>().FadeTo(3);
     }
 }

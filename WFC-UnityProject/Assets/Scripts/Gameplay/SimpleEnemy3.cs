@@ -13,6 +13,16 @@ public class SimpleEnemy3 : MonoBehaviour
     {
         localScale = transform.localScale;
         rb = GetComponent<Rigidbody2D>();
+        InvokeRepeating("SpriteFlip", 5f, 5f);
+    }
+
+    private void SpriteFlip ()
+    {
+        int r = Random.Range(0, 10);
+        if(r > 5)
+        {
+            this.GetComponent<SpriteRenderer>().flipX = !this.GetComponent<SpriteRenderer>().flipX;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

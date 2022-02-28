@@ -1170,7 +1170,6 @@ MonoBehaviour:
   doorDist: 750
   minDoorDist: 10
   roomDimension: 40
-  filledList: []
   canGo: 0
   entranceGen: 0
   exitGen: 0
@@ -4791,6 +4790,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 23493c8a3554d49ee9cabb8f0035d7b2, type: 3}
   - {fileID: 8300000, guid: 40155272c4f0f4b9aba4cf1750e502c0, type: 3}
   - {fileID: 8300000, guid: efdb3862681454b13bbea65a0003d61d, type: 3}
+  - {fileID: 8300000, guid: d1ea9830a7a5046b7b8284d7309556b0, type: 3}
 --- !u!1 &1914582281
 GameObject:
   m_ObjectHideFlags: 0
