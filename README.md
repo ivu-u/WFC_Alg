@@ -2,6 +2,11 @@
 Implementation of WFC algorithm into a Unity project for level generation.
 Features tile weights, rules, cleanup, and door placement integrated into a full game.
 
+**Controls:**
+- Confirm - Z
+- Pause - 1
+- Movement - Arrows/WASD
+
 **Instructions for running in Unity:**
 1. Clone repo
 2. Open Unity Hub
