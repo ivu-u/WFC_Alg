@@ -1,6 +1,6 @@
 # WFC_Alg
 ## **Purpose:**
-The purpose of this project was to create a simple game that procedurally generated levels based off the wave function collapse algorithm. Levels will automatically place tiles, rippling out, that further constrain and collapse neighboring tile possibilities. 
+Made January-March 2022. The purpose of this project was to create a simple game that procedurally generated levels based off the wave function collapse algorithm. Levels will automatically place tiles, rippling out, that further constrain and collapse neighboring tile possibilities. 
 
 ## **Controls:**
 - Movement: WASD/Arrow Keys
